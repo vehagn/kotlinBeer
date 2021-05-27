@@ -10,7 +10,7 @@ data class TransactionDAO(
     @GeneratedValue
     val id: Long,
     @ManyToOne
-    val person: PersonDAO,
+    val user: UserDAO,
     val previousBalance: Int,
     val balanceChange: Int,
     val currentBalance: Int,

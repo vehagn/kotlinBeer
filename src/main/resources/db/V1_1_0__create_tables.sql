@@ -22,7 +22,7 @@ create table items
     primary key (id)
 );
 
-create table persons
+create table users
 (
     card_id               bigint  not null,
     first_name            varchar(255),
@@ -46,7 +46,7 @@ create table persons
 create table transactions
 (
     id                      bigint  not null,
-    person_card_id          bigint  not null,
+    user_card_id            bigint  not null,
     previous_balance        integer not null,
     balance_change          integer not null,
     current_balance         integer not null,

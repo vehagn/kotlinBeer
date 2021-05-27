@@ -6,11 +6,10 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import javax.persistence.Entity
 import javax.persistence.Id
-import javax.persistence.OneToMany
 import javax.persistence.OneToOne
 
-@Entity(name = "PERSONS")
-data class PersonDAO(
+@Entity(name = "USERS")
+data class UserDAO(
     @Id
     val cardId: Long,
     val firstName: String,
@@ -30,22 +29,22 @@ data class PersonDAO(
     val created: ZonedDateTime,
     val changed: ZonedDateTime?
 ) : Serializable {
-    constructor(legacyPersonDAO: LegacyPersonDAO) : this(
-        legacyPersonDAO.cardId,
-        legacyPersonDAO.firstName,
-        legacyPersonDAO.lastName,
-        legacyPersonDAO.username,
-        legacyPersonDAO.studprog,
-        legacyPersonDAO.membership == 1,
-        legacyPersonDAO.userlevel.toByte(),
-        legacyPersonDAO.password,
-        legacyPersonDAO.tab.toByte(),
-        legacyPersonDAO.cash,
-        legacyPersonDAO.spent,
+    constructor(legacyUserDAO: LegacyUserDAO) : this(
+        legacyUserDAO.cardId,
+        legacyUserDAO.firstName,
+        legacyUserDAO.lastName,
+        legacyUserDAO.username,
+        legacyUserDAO.studprog,
+        legacyUserDAO.membership == 1,
+        legacyUserDAO.userlevel.toByte(),
+        legacyUserDAO.password,
+        legacyUserDAO.tab.toByte(),
+        legacyUserDAO.cash,
+        legacyUserDAO.spent,
         null,
-        legacyPersonDAO.comment,
-        legacyPersonDAO.misc,
-        ZonedDateTime.ofInstant(Instant.ofEpochSecond(legacyPersonDAO.creationDate.toLong()), ZoneId.of("Europe/Oslo")),
+        legacyUserDAO.comment,
+        legacyUserDAO.misc,
+        ZonedDateTime.ofInstant(Instant.ofEpochSecond(legacyUserDAO.creationDate.toLong()), ZoneId.of("Europe/Oslo")),
         null
     )
 }

@@ -1,33 +1,32 @@
 package no.deltahouse.kotlinbeer.controller
 
 import no.deltahouse.kotlinbeer.database.LegacyRepository
-import no.deltahouse.kotlinbeer.model.dao.LegacyPersonDAO
-import no.deltahouse.kotlinbeer.model.dao.PersonDAO
-import no.deltahouse.kotlinbeer.model.dto.PersonDTO
-import no.deltahouse.kotlinbeer.service.Service
+import no.deltahouse.kotlinbeer.model.dao.LegacyUserDAO
+import no.deltahouse.kotlinbeer.model.dao.UserDAO
+import no.deltahouse.kotlinbeer.model.dto.UserDTO
+import no.deltahouse.kotlinbeer.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
-import org.w3c.dom.ls.LSInput
 
 @RestController
-class DeltaBeer(@Autowired val service: Service, @Autowired val legacyRepository: LegacyRepository) {
+class DeltaBeer(@Autowired val userService: UserService, @Autowired val legacyRepository: LegacyRepository) {
     @GetMapping("/legacy")
-    fun getLegacy(): List<LegacyPersonDAO> {
+    fun getLegacy(): List<LegacyUserDAO> {
         return legacyRepository.getPeople()
     }
 
     @GetMapping("/new")
-    fun getNew(): List<PersonDTO> {
-        return service.findAll().stream()
-            .map { domain -> PersonDTO(domain) }
+    fun getNew(): List<UserDTO> {
+        return userService.findAll().stream()
+            .map { domain -> UserDTO(domain) }
             .toList()
     }
 
     @GetMapping("/people/{id}")
-    fun getPersonById(@PathVariable id: Long): PersonDAO {
-        val person = service.find(id);
+    fun getPersonById(@PathVariable id: Long): UserDAO {
+        val person = userService.find(id);
         return person
     }
 }

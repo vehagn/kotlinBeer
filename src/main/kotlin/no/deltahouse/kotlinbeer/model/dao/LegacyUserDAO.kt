@@ -5,7 +5,7 @@ import lombok.ToString
 import java.io.Serializable
 import javax.persistence.Id
 
-data class LegacyPersonDAO(
+data class LegacyUserDAO(
     @Id
     val cardId: Long,
     val firstName: String,

@@ -10,11 +10,11 @@ class BorrowedItemDTO(item: BorrowedItem) : Serializable {
     val comment: String? = item.comment
     val borrowedDate: ZonedDateTime = item.borrowedDate
     val returnedDate: ZonedDateTime? = item.returnedDate
-    val status: Status = getStatus(item.borrowedDate, item.returnByDate, item.returnedDate)
+    val status: Status = getItemBorrowStatus(item.borrowedDate, item.returnByDate, item.returnedDate)
 
     enum class Status { SCHEDULED, ACTIVE, LATE, RETURNED, DISCREPANCY }
 
-    private fun getStatus(
+    private fun getItemBorrowStatus(
         borrowedDate: ZonedDateTime,
         returnByDate: ZonedDateTime,
         returnedDate: ZonedDateTime?

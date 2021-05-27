@@ -3,37 +3,37 @@ package no.deltahouse.kotlinbeer.service
 import no.deltahouse.kotlinbeer.database.*
 import no.deltahouse.kotlinbeer.model.dao.BorrowedItemDAO
 import no.deltahouse.kotlinbeer.model.dao.ItemDAO
-import no.deltahouse.kotlinbeer.model.dao.PersonDAO
-import no.deltahouse.kotlinbeer.model.domain.Person
+import no.deltahouse.kotlinbeer.model.dao.UserDAO
+import no.deltahouse.kotlinbeer.model.domain.User
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.time.ZonedDateTime
 
 @Service
-class Service(@Autowired val personRepository: PersonRepository,
-              @Autowired val itemRepository: ItemRepository,
-              @Autowired val borrowedItemRepository: BorrowedItemRepository,
-              @Autowired val transactionRepository: TransactionRepository,
-              @Autowired val legacyRepository: LegacyRepository) {
+class UserService(@Autowired val personRepository: PersonRepository,
+                  @Autowired val itemRepository: ItemRepository,
+                  @Autowired val borrowedItemRepository: BorrowedItemRepository,
+                  @Autowired val transactionRepository: TransactionRepository,
+                  @Autowired val legacyRepository: LegacyRepository) {
     init {
         this.migrate()
         this.createItems()
     }
 
-    fun findAll(): List<Person> {
+    fun findAll(): List<User> {
         return personRepository.findAll()
-            .map { dao -> Person(dao) }
+            .map { dao -> User(dao) }
     }
 
-    fun find(id: Long): PersonDAO {
+    fun find(id: Long): UserDAO {
         return personRepository.findById(id).orElse(null);
     }
 
     private fun migrate() {
         val legacyPersons = legacyRepository.getPeople();
         val persons = legacyPersons
-            .map { leg -> PersonDAO(leg) }
+            .map { leg -> UserDAO(leg) }
         personRepository.saveAll(persons)
     }
 

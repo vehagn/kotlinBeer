@@ -13,7 +13,7 @@ data class BorrowedItemDAO(
     val item: ItemDAO,
     val comment: String?,
     @ManyToOne
-    val borrower: PersonDAO,
+    val borrower: UserDAO,
     val borrowedDate: ZonedDateTime,
     val returnByDate: ZonedDateTime,
     val returnedDate: ZonedDateTime? = null,
