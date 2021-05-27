@@ -5,9 +5,7 @@ import lombok.ToString
 import java.io.Serializable
 import javax.persistence.Id
 
-@ToString
-@EqualsAndHashCode
-class LegacyPersonDAO(
+data class LegacyPersonDAO(
     @Id
     val cardId: Long,
     val firstName: String,

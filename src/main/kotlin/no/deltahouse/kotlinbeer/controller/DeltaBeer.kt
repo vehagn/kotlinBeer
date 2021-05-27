@@ -3,6 +3,7 @@ package no.deltahouse.kotlinbeer.controller
 import no.deltahouse.kotlinbeer.database.LegacyRepository
 import no.deltahouse.kotlinbeer.model.dao.LegacyPersonDAO
 import no.deltahouse.kotlinbeer.model.dao.PersonDAO
+import no.deltahouse.kotlinbeer.model.dto.PersonDTO
 import no.deltahouse.kotlinbeer.service.Service
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.GetMapping
@@ -18,8 +19,10 @@ class DeltaBeer(@Autowired val service: Service, @Autowired val legacyRepository
     }
 
     @GetMapping("/new")
-    fun getNew(): List<PersonDAO> {
-        return service.findAll()
+    fun getNew(): List<PersonDTO> {
+        return service.findAll().stream()
+            .map { domain -> PersonDTO(domain) }
+            .toList()
     }
 
     @GetMapping("/people/{id}")

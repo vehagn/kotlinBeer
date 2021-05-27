@@ -1,42 +1,58 @@
 package no.deltahouse.kotlinbeer.service
 
-import no.deltahouse.kotlinbeer.database.LegacyRepository
-import no.deltahouse.kotlinbeer.database.Repository
+import no.deltahouse.kotlinbeer.database.*
+import no.deltahouse.kotlinbeer.model.dao.BorrowedItemDAO
+import no.deltahouse.kotlinbeer.model.dao.ItemDAO
 import no.deltahouse.kotlinbeer.model.dao.PersonDAO
+import no.deltahouse.kotlinbeer.model.domain.Person
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.stream.Collectors
-import kotlin.streams.toList
+import java.time.ZonedDateTime
 
 @Service
-class Service(@Autowired val repository: Repository, @Autowired val legacyRepository: LegacyRepository) {
+class Service(@Autowired val personRepository: PersonRepository,
+              @Autowired val itemRepository: ItemRepository,
+              @Autowired val borrowedItemRepository: BorrowedItemRepository,
+              @Autowired val transactionRepository: TransactionRepository,
+              @Autowired val legacyRepository: LegacyRepository) {
     init {
         this.migrate()
+        this.createItems()
     }
 
-    fun findAll(): List<PersonDAO> {
-        return repository.findAll();
+    fun findAll(): List<Person> {
+        return personRepository.findAll()
+            .map { dao -> Person(dao) }
     }
 
     fun find(id: Long): PersonDAO {
-        return repository.findById(id).orElse(null);
+        return personRepository.findById(id).orElse(null);
     }
 
     private fun migrate() {
         val legacyPersons = legacyRepository.getPeople();
-        val persons = legacyPersons.stream()
+        val persons = legacyPersons
             .map { leg -> PersonDAO(leg) }
-            .toList()
-        repository.saveAll(persons)
+        personRepository.saveAll(persons)
+    }
+
+    private fun createItems() {
+        itemRepository.save(ItemDAO(name = "Item", description = "Big and round", created = ZonedDateTime.now()))
+        itemRepository.save(ItemDAO(name = "Item2", description = "Small", created = ZonedDateTime.now()))
+        itemRepository.save(ItemDAO(name = "Item3", description = "Big", created = ZonedDateTime.now()))
+
+        val item = itemRepository.getOne(1)
+        val borrower = personRepository.getOne(111)
+        borrowedItemRepository.save(BorrowedItemDAO(item = item, comment = "comment", borrower = borrower, borrowedDate = ZonedDateTime.now(), returnByDate = ZonedDateTime.now().plusDays(2)))
     }
 
     @Transactional
     fun buy(id: Long, amount: Int) {
-        val person = repository.findById(id).orElseGet(null);
+        val person = personRepository.findById(id).orElseGet(null);
         if (person != null) {
             //person.buy(amount);
-            repository.save(person)
+            personRepository.save(person)
         }
     }
 }
