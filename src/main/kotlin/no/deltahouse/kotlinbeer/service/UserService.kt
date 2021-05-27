@@ -40,9 +40,8 @@ class UserService(@Autowired val personRepository: PersonRepository,
     private fun createItems() {
         itemRepository.save(ItemDAO(name = "Item", description = "Big and round", created = ZonedDateTime.now()))
         itemRepository.save(ItemDAO(name = "Item2", description = "Small", created = ZonedDateTime.now()))
-        itemRepository.save(ItemDAO(name = "Item3", description = "Big", created = ZonedDateTime.now()))
+        val item = itemRepository.save(ItemDAO(name = "Item3", description = "Big", created = ZonedDateTime.now()))
 
-        val item = itemRepository.getOne(1)
         val borrower = personRepository.getOne(111)
         borrowedItemRepository.save(BorrowedItemDAO(item = item, comment = "comment", borrower = borrower, borrowedDate = ZonedDateTime.now(), returnByDate = ZonedDateTime.now().plusDays(2)))
     }

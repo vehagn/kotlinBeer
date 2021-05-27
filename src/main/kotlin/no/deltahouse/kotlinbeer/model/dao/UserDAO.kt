@@ -4,13 +4,10 @@ import java.io.Serializable
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.OneToOne
+import javax.persistence.*
 
 @Entity(name = "USERS")
 data class UserDAO(
-    @Id
     val cardId: Long,
     val firstName: String,
     val lastName: String,
@@ -27,7 +24,10 @@ data class UserDAO(
     val title: String,
     val comment: String,
     val created: ZonedDateTime,
-    val changed: ZonedDateTime?
+    val changed: ZonedDateTime?,
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_generator")
+    val id: Long = 0,
 ) : Serializable {
     constructor(legacyUserDAO: LegacyUserDAO) : this(
         legacyUserDAO.cardId,

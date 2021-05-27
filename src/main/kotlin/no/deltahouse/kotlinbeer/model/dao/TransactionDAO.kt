@@ -6,9 +6,6 @@ import javax.persistence.*
 
 @Entity(name = "TRANSACTIONS")
 data class TransactionDAO(
-    @Id
-    @GeneratedValue
-    val id: Long,
     @ManyToOne
     val user: UserDAO,
     val previousBalance: Int,
@@ -17,5 +14,8 @@ data class TransactionDAO(
     val transactionDate: ZonedDateTime,
     @OneToOne
     val previousTransaction: TransactionDAO?,
-    val hash: Int
+    val hash: Int,
+    @Id
+    @GeneratedValue
+    val id: Long = 0,
 ) : Serializable

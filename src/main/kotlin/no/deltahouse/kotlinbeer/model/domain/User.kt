@@ -15,7 +15,7 @@ class User(user: UserDAO) {
     val tab: Byte = user.tab
     val cashBalance: Int = user.cashBalance
     val totalSpent: Int = user.totalSpent
-    val latestTransaction: Int = user.latestTransaction.hashCode()
+    val latestTransactionHash: Int? = user.latestTransaction?.hash
     val title: String = user.title
     val comment: String = user.comment
     val created: ZonedDateTime = user.created

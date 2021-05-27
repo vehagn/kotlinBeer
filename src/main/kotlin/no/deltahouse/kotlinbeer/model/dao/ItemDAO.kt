@@ -11,8 +11,8 @@ data class ItemDAO(
     val name: String,
     val description: String,
     val created: ZonedDateTime,
+    val changed: ZonedDateTime? = null,
     @Id
     @GeneratedValue
     val id: Long = 0,
-    val changed: ZonedDateTime? = null
 ) : Serializable

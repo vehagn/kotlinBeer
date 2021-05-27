@@ -1,10 +1,11 @@
 create sequence if not exists hibernate_sequence start with 1 increment by 1;
+create sequence if not exists user_id_generator start with 1 increment by 50;
 
 create table borrowed_items
 (
     id               bigint not null,
     item_id          bigint,
-    borrower_card_id bigint,
+    borrower_id      bigint,
     comment          varchar(255),
     borrowed_date    timestamp,
     return_by_date   timestamp,
@@ -24,7 +25,8 @@ create table items
 
 create table users
 (
-    card_id               bigint  not null,
+    id                    bigint not null,
+    card_id               bigint not null,
     first_name            varchar(255),
     last_name             varchar(255),
     studprog              varchar(255),
@@ -40,13 +42,13 @@ create table users
     latest_transaction_id bigint,
     changed               timestamp,
     created               timestamp,
-    primary key (card_id),
+    primary key (id),
 );
 
 create table transactions
 (
     id                      bigint  not null,
-    user_card_id            bigint  not null,
+    user_id                 bigint  not null,
     previous_balance        integer not null,
     balance_change          integer not null,
     current_balance         integer not null,
