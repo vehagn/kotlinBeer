@@ -1,7 +1,5 @@
 package no.deltahouse.kotlinbeer.model.dao
 
-import lombok.EqualsAndHashCode
-import lombok.ToString
 import java.io.Serializable
 import javax.persistence.Id
 

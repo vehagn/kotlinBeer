@@ -1,7 +1,7 @@
 package no.deltahouse.kotlinbeer.model.domain
 
-import no.deltahouse.kotlinbeer.model.dao.UserDAO
 import no.deltahouse.kotlinbeer.model.dao.TransactionDAO
+import no.deltahouse.kotlinbeer.model.dao.UserDAO
 import java.time.ZonedDateTime
 
 class Transaction(transaction: TransactionDAO) {

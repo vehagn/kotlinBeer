@@ -19,10 +19,10 @@ class BorrowedItemDTO(item: BorrowedItem) : Serializable {
         returnByDate: ZonedDateTime,
         returnedDate: ZonedDateTime?
     ): Status {
-        val now = ZonedDateTime.now();
+        val now = ZonedDateTime.now()
 
         if (returnedDate != null) {
-            return if (returnedDate.isAfter(now)) Status.RETURNED else Status.DISCREPANCY;
+            return if (returnedDate.isAfter(now)) Status.RETURNED else Status.DISCREPANCY
         }
 
         if (borrowedDate.isBefore(now)) return Status.SCHEDULED

@@ -26,7 +26,7 @@ class DeltaBeer(@Autowired val userService: UserService, @Autowired val legacyRe
 
     @GetMapping("/people/{id}")
     fun getPersonById(@PathVariable id: Long): UserDAO {
-        val person = userService.find(id);
+        val person = userService.find(id)
         return person
     }
 }

@@ -5,10 +5,10 @@ import java.time.ZonedDateTime
 
 class User(user: UserDAO) {
     val cardId: Long = user.cardId
-    val firstName:String = user.firstName
-    val lastName:String = user.lastName
-    val username:String = user.username
-    val studprog:String = user.studprog
+    val firstName: String = user.firstName
+    val lastName: String = user.lastName
+    val username: String = user.username
+    val studprog: String = user.studprog
     val isMember: Boolean = user.isMember
     val userlevel: Byte = user.userlevel
     val password: String = user.password

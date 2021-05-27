@@ -3,13 +3,13 @@ create sequence if not exists user_id_generator start with 1 increment by 50;
 
 create table borrowed_items
 (
-    id               bigint not null,
-    item_id          bigint,
-    borrower_id      bigint,
-    comment          varchar(255),
-    borrowed_date    timestamp,
-    return_by_date   timestamp,
-    returned_date    timestamp,
+    id             bigint not null,
+    item_id        bigint,
+    borrower_id    bigint,
+    comment        varchar(255),
+    borrowed_date  timestamp,
+    return_by_date timestamp,
+    returned_date  timestamp,
     primary key (id)
 );
 
@@ -25,8 +25,8 @@ create table items
 
 create table users
 (
-    id                    bigint not null,
-    card_id               bigint not null,
+    id                    bigint  not null,
+    card_id               bigint  not null,
     first_name            varchar(255),
     last_name             varchar(255),
     studprog              varchar(255),
