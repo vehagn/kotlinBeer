@@ -1,7 +1,6 @@
 package no.deltahouse.kotlinbeer.service
 
 import no.deltahouse.kotlinbeer.database.*
-import no.deltahouse.kotlinbeer.model.dao.BorrowedItemDAO
 import no.deltahouse.kotlinbeer.model.dao.ItemDAO
 import no.deltahouse.kotlinbeer.model.dao.UserDAO
 import no.deltahouse.kotlinbeer.model.domain.User
@@ -12,31 +11,24 @@ import java.time.ZonedDateTime
 
 @Service
 class UserService(
-    @Autowired val personRepository: PersonRepository,
+    @Autowired val userRepository: UserRepository,
     @Autowired val itemRepository: ItemRepository,
     @Autowired val borrowedItemRepository: BorrowedItemRepository,
     @Autowired val transactionRepository: TransactionRepository,
     @Autowired val legacyRepository: LegacyRepository
 ) {
     init {
-        this.migrate()
-        this.createItems()
+        //this.migrate()
+        //this.createItems()
     }
 
     fun findAll(): List<User> {
-        return personRepository.findAll()
+        return userRepository.findAll()
             .map { dao -> User(dao) }
     }
 
     fun find(id: Long): UserDAO {
-        return personRepository.findById(id).orElse(null)
-    }
-
-    private fun migrate() {
-        val legacyPersons = legacyRepository.getPeople()
-        val persons = legacyPersons
-            .map { leg -> UserDAO(leg) }
-        personRepository.saveAll(persons)
+        return userRepository.findByCardId(id).orElse(null)//userRepository.findById(UserPK(id, 0)).orElse(null)
     }
 
     private fun createItems() {
@@ -44,24 +36,24 @@ class UserService(
         itemRepository.save(ItemDAO(name = "Item2", description = "Small", created = ZonedDateTime.now()))
         val item = itemRepository.save(ItemDAO(name = "Item3", description = "Big", created = ZonedDateTime.now()))
 
-        val borrower = personRepository.getOne(111)
-        borrowedItemRepository.save(
-            BorrowedItemDAO(
-                item = item,
-                comment = "comment",
-                borrower = borrower,
-                borrowedDate = ZonedDateTime.now(),
-                returnByDate = ZonedDateTime.now().plusDays(2)
-            )
-        )
+        //val borrower = userRepository.getOne(111)
+        //borrowedItemRepository.save(
+        //    BorrowedItemDAO(
+        //        item = item,
+        //        comment = "comment",
+        //        borrower = borrower,
+        //        borrowedDate = ZonedDateTime.now(),
+        //        returnByDate = ZonedDateTime.now().plusDays(2)
+        //    )
+        //)
     }
 
     @Transactional
     fun buy(id: Long, amount: Int) {
-        val person = personRepository.findById(id).orElseGet(null)
-        if (person != null) {
-            //person.buy(amount);
-            personRepository.save(person)
-        }
+        //val person = userRepository.findById(id).orElseGet(null)
+        //if (person != null) {
+        //    //person.buy(amount);
+        //    userRepository.save(person)
+        //}
     }
 }

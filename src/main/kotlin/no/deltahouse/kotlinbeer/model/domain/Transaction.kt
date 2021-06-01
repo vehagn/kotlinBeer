@@ -11,5 +11,5 @@ class Transaction(transaction: TransactionDAO) {
     val balanceChange: Int = transaction.balanceChange
     val currentBalance: Int = transaction.currentBalance
     val transactionDate: ZonedDateTime = transaction.transactionDate
-    val previousTransactionHash: Int? = transaction.previousTransaction?.hash
+    val previousTransactionHash: Long? = transaction.previousTransaction?.hash
 }

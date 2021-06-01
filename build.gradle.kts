@@ -30,6 +30,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
+    runtimeOnly("org.postgresql:postgresql")
     implementation("com.h2database:h2:1.4.196")
     implementation("org.flywaydb:flyway-core:7.8.2")
 

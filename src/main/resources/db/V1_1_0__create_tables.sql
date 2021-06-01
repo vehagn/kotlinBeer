@@ -1,59 +1,64 @@
-create sequence if not exists hibernate_sequence start with 1 increment by 1;
 create sequence if not exists user_id_generator start with 1 increment by 50;
-
-create table borrowed_items
-(
-    id             bigint not null,
-    item_id        bigint,
-    borrower_id    bigint,
-    comment        varchar(255),
-    borrowed_date  timestamp,
-    return_by_date timestamp,
-    returned_date  timestamp,
-    primary key (id)
-);
-
-create table items
-(
-    id          bigint not null,
-    name        varchar(255),
-    description varchar(255),
-    created     timestamp,
-    changed     timestamp,
-    primary key (id)
-);
+create sequence if not exists item_id_generator start with 1 increment by 50;
+create sequence if not exists borrowed_item_id_generator start with 1 increment by 50;
+create sequence if not exists transaction_id_generator start with 1 increment by 50;
 
 create table users
 (
-    id                    bigint  not null,
-    card_id               bigint  not null,
-    first_name            varchar(255),
-    last_name             varchar(255),
-    studprog              varchar(255),
-    is_member             boolean not null,
-    userlevel             tinyint not null,
-    title                 varchar(255),
-    comment               varchar(255),
-    username              varchar(255),
-    password              varchar(255),
-    cash_balance          integer not null,
-    total_spent           integer not null,
-    tab                   tinyint not null,
-    latest_transaction_id bigint,
-    changed               timestamp,
+    id                    int8 primary key,
+    card_id               int8 unique not null,
+    first_name            varchar(63),
+    last_name             varchar(63),
+    username              varchar(31),
+    birthday              timestamp,
+    studprog              varchar(31),
+    is_member             boolean     not null,
+    tab                   int2        not null,
+    cash_balance          int4        not null,
+    total_spent           int4        not null,
+    latest_transaction_id int8,
     created               timestamp,
-    primary key (id),
+    changed               timestamp
+);
+
+create table user_properties
+(
+    id       int8 primary key,
+    user_id  int8,
+    property varchar(255) not null,
+    value    varchar(255),
+    created  timestamp,
+    changed  timestamp
 );
 
 create table transactions
 (
-    id                      bigint  not null,
-    user_id                 bigint  not null,
-    previous_balance        integer not null,
-    balance_change          integer not null,
-    current_balance         integer not null,
-    previous_transaction_id bigint,
-    transaction_date        timestamp,
-    hash                    integer not null,
-    primary key (id),
+    id                      int8 primary key,
+    user_id                 int8,
+    previous_balance        int4 not null,
+    balance_change          int4 not null,
+    current_balance         int4 not null,
+    previous_transaction_id int8,
+    hash                    int8 not null,
+    transaction_date        timestamp
+);
+
+create table items
+(
+    id          int8 primary key,
+    name        varchar(63),
+    description varchar(255),
+    created     timestamp,
+    changed     timestamp
+);
+
+create table borrowed_items
+(
+    id             int8 primary key,
+    item_id        int8,
+    borrower_id    int8,
+    comment        varchar(255),
+    borrowed_date  timestamp,
+    return_by_date timestamp,
+    returned_date  timestamp
 );

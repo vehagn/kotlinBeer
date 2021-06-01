@@ -9,6 +9,7 @@ data class LegacyUserDAO(
     val firstName: String,
     val lastName: String,
     val username: String,
+    val birthday: String,
     val studprog: String,
     val membership: Int,
     val userlevel: Int,

@@ -10,12 +10,9 @@ class UserDTO(user: User) {
     val username: String = user.username
     val studprog: String = user.studprog
     val membership: Boolean = user.isMember
-    val userlevel: Byte = user.userlevel
     val tab: Byte = user.tab
     val cash: Int = user.cashBalance
     val spent: Int = user.totalSpent
-    val title: String = user.title
-    val comment: String = user.comment
     val created: ZonedDateTime = user.created
     val changed: ZonedDateTime? = user.changed
 }
