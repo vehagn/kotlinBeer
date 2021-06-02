@@ -21,6 +21,8 @@ data class UserDAO(
     val tab: Byte,
     val cashBalance: Int,
     val totalSpent: Int,
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    val userProperties: List<UserPropertyDAO>,
     @OneToOne
     val latestTransaction: TransactionDAO?,
     //@CreationTimestamp

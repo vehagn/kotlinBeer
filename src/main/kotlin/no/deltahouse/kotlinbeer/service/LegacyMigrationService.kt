@@ -3,6 +3,7 @@ package no.deltahouse.kotlinbeer.service
 import no.deltahouse.kotlinbeer.database.LegacyRepository
 import no.deltahouse.kotlinbeer.database.UserPropertyRepository
 import no.deltahouse.kotlinbeer.database.UserRepository
+import no.deltahouse.kotlinbeer.model.constants.UserPropertyType
 import no.deltahouse.kotlinbeer.model.dao.UserDAO
 import no.deltahouse.kotlinbeer.model.dao.UserPropertyDAO
 import org.springframework.beans.factory.annotation.Autowired
@@ -52,6 +53,7 @@ class LegacyMigrationService(
                     leg.tab.toByte(),
                     leg.cash,
                     leg.spent,
+                    listOf(UserPropertyDAO(-1, UserPropertyType.TITLE, leg.comment)),
                     null,
                     ZonedDateTime.ofInstant(
                         Instant.ofEpochSecond(leg.creationDate.toLong()),
@@ -62,16 +64,16 @@ class LegacyMigrationService(
             }
         userRepository.saveAll(users)
 
-        val userProperties = legacyUsers
-            .filter { leg -> leg.comment.isNotBlank() }
-            .map { leg ->
-                UserPropertyDAO(
-                    -1,
-                    userRepository.findByCardId(leg.cardId).get(),
-                    "Title",
-                    leg.comment
-                )
-            }
-        userPropertyRepository.saveAll(userProperties)
+        //val userProperties = legacyUsers
+        //    .filter { leg -> leg.comment.isNotBlank() }
+        //    .map { leg ->
+        //        UserPropertyDAO(
+        //            -1,
+        //            userRepository.findByCardId(leg.cardId).get(),
+        //            UserPropertyType.TITLE,
+        //            leg.comment
+        //        )
+        //    }
+        //userPropertyRepository.saveAll(userProperties)
     }
 }

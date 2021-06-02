@@ -1,4 +1,5 @@
 create sequence if not exists user_id_generator start with 1 increment by 50;
+create sequence if not exists user_property_id_generator start with 1 increment by 50;
 create sequence if not exists item_id_generator start with 1 increment by 50;
 create sequence if not exists borrowed_item_id_generator start with 1 increment by 50;
 create sequence if not exists transaction_id_generator start with 1 increment by 50;
@@ -24,11 +25,16 @@ create table users
 create table user_properties
 (
     id       int8 primary key,
-    user_id  int8,
-    property varchar(255) not null,
+    property user_property_type not null,
     value    varchar(255),
     created  timestamp,
     changed  timestamp
+);
+
+create table users_user_properties
+(
+    users_id           int8        not null,
+    user_properties_id int8 unique not null
 );
 
 create table transactions
