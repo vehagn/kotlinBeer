@@ -9,7 +9,5 @@ class Transaction(transaction: TransactionDAO) {
     val user: UserDAO = transaction.user
     val previousBalance: Int = transaction.previousBalance
     val balanceChange: Int = transaction.balanceChange
-    val currentBalance: Int = transaction.currentBalance
     val transactionDate: ZonedDateTime = transaction.transactionDate
-    val previousTransactionHash: Long? = transaction.previousTransaction?.hash
 }

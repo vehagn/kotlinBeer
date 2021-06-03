@@ -18,15 +18,35 @@ data class UserDAO(
     val username: String,
     val studprog: String,
     val isMember: Boolean,
-    val tab: Byte,
+    val tab: Byte?,
     val cashBalance: Int,
     val totalSpent: Int,
-    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
+    @OrderBy(value = "changed DESC")
     val userProperties: List<UserPropertyDAO>,
-    @OneToOne
-    val latestTransaction: TransactionDAO?,
     //@CreationTimestamp
     val created: ZonedDateTime = ZonedDateTime.now(),
     @UpdateTimestamp
     val changed: ZonedDateTime? = null,
-) : Serializable
+) : Serializable {
+    @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    var latestTransaction: TransactionDAO? = null
+
+    constructor(user: UserDAO, transaction: TransactionDAO) : this(
+        user.id,
+        user.cardId,
+        user.firstName,
+        user.lastName,
+        user.birthday,
+        user.username,
+        user.studprog,
+        user.isMember,
+        user.tab,
+        user.cashBalance + transaction.balanceChange,
+        user.totalSpent + if (transaction.balanceChange > 0) transaction.balanceChange else 0,
+        user.userProperties,
+        user.created,
+    ) {
+        this.latestTransaction = transaction;
+    }
+}
