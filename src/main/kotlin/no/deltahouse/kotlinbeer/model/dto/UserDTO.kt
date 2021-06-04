@@ -9,10 +9,10 @@ class UserDTO(user: User) {
     val lastName: String = user.lastName
     val username: String = user.username
     val title: String? = user.title
-    val comments: List<String> = user.comments
-    val studprog: String = user.studprog
+    val comments: List<String?> = user.comments
+    val studprog: String? = user.studprog
     val membership: Boolean = user.isMember
-    val tab: Byte? = user.tab
+    val creditRating: Byte? = user.creditRating
     val cashBalance: Int = user.cashBalance
     val totalSpent: Int = user.totalSpent
     val created: ZonedDateTime = user.created

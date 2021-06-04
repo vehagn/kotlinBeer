@@ -17,7 +17,7 @@ class UserService(
     }
 
     fun getByCardId(cardId: Long): User {
-        val userDAO = userRepository.findByCardId(cardId);
+        val userDAO = userRepository.findByCardId(cardId)
         if (userDAO.isEmpty) {
             throw UserNotFoundException()
         }

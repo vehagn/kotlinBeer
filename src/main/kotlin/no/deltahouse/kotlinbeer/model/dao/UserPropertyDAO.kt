@@ -16,7 +16,8 @@ data class UserPropertyDAO(
     @Enumerated(EnumType.STRING)
     @Type(type = "no.deltahouse.kotlinbeer.database.PostgreSQLEnumType")
     val property: UserPropertyType,
-    val value: String,
+    @Column(length = 63, nullable = true)
+    val value: String?,
     @CreationTimestamp
     val created: ZonedDateTime = ZonedDateTime.now(),
     @UpdateTimestamp

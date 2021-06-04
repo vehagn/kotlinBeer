@@ -76,14 +76,14 @@ class LegacyMigrationService(
         val transactions = legacyUsers
             .filter { !(it.spent == 0 && it.cash == 0) }
             .map {
-                TransactionDAO(userRepository.findByCardId(it.cardId).get(), it.cash)
+                TransactionDAO(userRepository.findByCardId(it.cardId).get(), it.cash.toShort())
             }
         val completedTransactions = transactionRepository.saveAll(transactions)
 
         val userTransactions = completedTransactions.map {
             UserDAO(it.user, it)
         }
-        userRepository.saveAll(userTransactions);
+        userRepository.saveAll(userTransactions)
 
     }
 }

@@ -13,13 +13,13 @@ data class TransactionDAO(
     @ManyToOne(fetch = FetchType.LAZY)
     val user: UserDAO,
     val previousBalance: Int,
-    val balanceChange: Int,
+    val balanceChange: Short,
     val hash: Long,
     val previousTransactionId: Long? = null,
     @CreationTimestamp
     val transactionDate: ZonedDateTime = ZonedDateTime.now(),
 ) : Serializable {
-    constructor(user: UserDAO, change: Int) : this(
+    constructor(user: UserDAO, change: Short) : this(
         id = -1,
         user = user,
         previousBalance = user.cashBalance,

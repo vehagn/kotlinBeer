@@ -12,16 +12,20 @@ data class UserDAO(
     val id: Long = -1,
     @Column(unique = true)
     val cardId: Long,
+    @Column(length = 63, nullable = false)
     val firstName: String,
+    @Column(length = 63, nullable = false)
     val lastName: String,
     val birthday: ZonedDateTime?,
+    @Column(length = 31, nullable = false)
     val username: String,
-    val studprog: String,
+    @Column(length = 31, nullable = true)
+    val studprog: String?,
     val isMember: Boolean,
-    val tab: Byte?,
+    val creditRating: Byte?,
     val cashBalance: Int,
     val totalSpent: Int,
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(cascade = [CascadeType.ALL])
     @OrderBy(value = "changed DESC")
     val userProperties: List<UserPropertyDAO>,
     //@CreationTimestamp
@@ -41,12 +45,12 @@ data class UserDAO(
         user.username,
         user.studprog,
         user.isMember,
-        user.tab,
+        user.creditRating,
         user.cashBalance + transaction.balanceChange,
         user.totalSpent + if (transaction.balanceChange > 0) transaction.balanceChange else 0,
         user.userProperties,
         user.created,
     ) {
-        this.latestTransaction = transaction;
+        this.latestTransaction = transaction
     }
 }

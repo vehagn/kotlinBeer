@@ -13,17 +13,17 @@ create table users
 (
     id                    int8 primary key,
     card_id               int8 unique not null,
-    first_name            varchar(63),
-    last_name             varchar(63),
-    username              varchar(31),
+    first_name            varchar(63) not null,
+    last_name             varchar(63) not null,
+    username              varchar(31) not null,
     birthday              timestamp,
     studprog              varchar(31),
     is_member             boolean     not null,
-    tab                   int2,
+    credit_rating         int2,
     cash_balance          int4        not null,
     total_spent           int4        not null,
     latest_transaction_id int8,
-    created               timestamp,
+    created               timestamp   not null,
     changed               timestamp
 );
 
@@ -31,7 +31,7 @@ create table user_properties
 (
     id       int8 primary key,
     property user_property not null,
-    value    varchar(255),
+    value    varchar(63),
     created  timestamp,
     changed  timestamp
 );
@@ -45,9 +45,9 @@ create table users_user_properties
 create table transactions
 (
     id                      int8 primary key,
-    user_id                 int8,
+    user_id                 int8 not null,
     previous_balance        int4 not null,
-    balance_change          int4 not null,
+    balance_change          int2 not null,
     previous_transaction_id int8,
     hash                    int8 not null,
     transaction_date        timestamp
@@ -56,8 +56,8 @@ create table transactions
 create table items
 (
     id          int8 primary key,
-    name        varchar(63),
-    description varchar(255),
+    name        varchar(31) not null,
+    description varchar(127),
     created     timestamp,
     changed     timestamp
 );
@@ -65,11 +65,11 @@ create table items
 create table borrowed_items
 (
     id             int8 primary key,
-    item_id        int8,
-    borrower_id    int8,
-    comment        varchar(255),
-    borrowed_date  timestamp,
-    return_by_date timestamp,
+    item_id        int8      not null,
+    borrower_id    int8      not null,
+    comment        varchar(127),
+    borrowed_date  timestamp not null,
+    return_by_date timestamp not null,
     returned_date  timestamp
 );
 

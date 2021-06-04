@@ -11,6 +11,7 @@ data class BorrowedItemDAO(
     val id: Long = -1,
     @ManyToOne
     val item: ItemDAO,
+    @Column(length = 127, nullable = true)
     val comment: String?,
     @ManyToOne
     val borrower: UserDAO,
