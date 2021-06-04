@@ -7,9 +7,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 class WebSecurityConfig : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
-       http.authorizeRequests()
-           .antMatchers("/**").permitAll()
-           .antMatchers("/h2-console/**").permitAll()
+        http.authorizeRequests()
+            .antMatchers("/**").permitAll()
+            .antMatchers("/h2-console/**").permitAll()
 
         http.csrf().disable()
         http.headers().frameOptions().disable()

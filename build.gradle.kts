@@ -23,6 +23,8 @@ repositories {
 }
 
 dependencies {
+    val mockkVersion = "1.10.6"
+
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-hateoas")
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
@@ -30,18 +32,21 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
+    runtimeOnly("org.postgresql:postgresql")
     implementation("com.h2database:h2:1.4.196")
     implementation("org.flywaydb:flyway-core:7.8.2")
 
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("mysql:mysql-connector-java")
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
+
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation("io.mockk:mockk:${mockkVersion}")
 }
 
 tasks.withType<KotlinCompile> {
@@ -49,6 +54,10 @@ tasks.withType<KotlinCompile> {
         freeCompilerArgs = listOf("-Xjsr305=strict")
         jvmTarget = "16"
     }
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 tasks.withType<Test> {

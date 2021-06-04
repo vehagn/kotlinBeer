@@ -1,18 +1,15 @@
 package no.deltahouse.kotlinbeer.model.dao
 
-import lombok.EqualsAndHashCode
-import lombok.ToString
 import java.io.Serializable
 import javax.persistence.Id
 
-@ToString
-@EqualsAndHashCode
-class LegacyPersonDAO(
+data class LegacyUserDAO(
     @Id
     val cardId: Long,
     val firstName: String,
     val lastName: String,
     val username: String,
+    val birthday: String,
     val studprog: String,
     val membership: Int,
     val userlevel: Int,
