@@ -10,16 +10,23 @@ import javax.persistence.*
 
 @Entity(name = "USER_PROPERTIES")
 data class UserPropertyDAO(
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_property_id_generator")
-    val id: Long = -1,
     @Enumerated(EnumType.STRING)
     @Type(type = "no.deltahouse.kotlinbeer.database.PostgreSQLEnumType")
-    val property: UserPropertyType,
+    val type: UserPropertyType,
     @Column(length = 63, nullable = true)
     val value: String?,
+    @Column(length = 15, nullable = false)
+    val createdBy: String,
     @CreationTimestamp
-    val created: ZonedDateTime = ZonedDateTime.now(),
+    val createdDate: ZonedDateTime = ZonedDateTime.now(),
+    @Column(length = 15, nullable = true)
+    val changedBy: String? = null,
     @UpdateTimestamp
-    val changed: ZonedDateTime? = null,
-) : Serializable
+    val changedDate: ZonedDateTime? = null
+) : Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_property_id_generator")
+    val id: Long = -1
+
+
+}
