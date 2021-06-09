@@ -1,11 +1,12 @@
 package no.deltahouse.kotlinbeer.service
 
 import no.deltahouse.kotlinbeer.database.TransactionRepository
-import no.deltahouse.kotlinbeer.database.UserWalletRepository
+import no.deltahouse.kotlinbeer.database.WalletRepository
 import no.deltahouse.kotlinbeer.model.constants.UserPropertyType
 import no.deltahouse.kotlinbeer.model.dao.TransactionDAO
 import no.deltahouse.kotlinbeer.model.dao.UserDAO
-import no.deltahouse.kotlinbeer.model.dao.UserWalletDAO
+import no.deltahouse.kotlinbeer.model.dao.WalletDAO
+import no.deltahouse.kotlinbeer.model.domain.UserWallet
 import no.deltahouse.kotlinbeer.model.exceptions.InvalidTransactionException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
@@ -15,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class TransactionService(
     @Autowired val userService: UserService,
-    @Autowired val userWalletRepository: UserWalletRepository,
+    @Autowired val walletRepository: WalletRepository,
     @Autowired val transactionRepository: TransactionRepository,
     @Value("\${transaction.deposit.max:1000}") val maxDepositValue: Int = 1000,
     @Value("\${transaction.purchase.max:500}") val maxPurchaseValue: Int = 500,
@@ -42,18 +43,17 @@ class TransactionService(
                         + if (creditRating > 0) " with a tab of ${creditRating * creditMultiplier}." else "."
             )
         }
-        val transaction = transactionRepository.save(TransactionDAO(userWalletDAO, (-1 * change).toShort()))
-        userWalletRepository.save(
+        walletRepository.save(
             userWalletDAO.copy(
-                cashBalance = userWalletDAO.cashBalance + transaction.balanceChange,
-                totalSpent = userWalletDAO.totalSpent + transaction.balanceChange,
-                latestTransaction = transaction
+                cashBalance = userWalletDAO.cashBalance - change,
+                totalSpent = userWalletDAO.totalSpent + change,
+                latestTransaction = transactionRepository.save(TransactionDAO(userWalletDAO, (-1 * change).toShort()))
             )
         )
     }
 
     @Transactional
-    fun deposit(cardId: Long, deposit: Short) {
+    fun deposit(cardId: Long, deposit: Short): UserWallet {
         val userDAO = userService.getUserDAOByCardId(cardId)
         val userWalletDAO = getOrCreateWalletForUser(userDAO)
 
@@ -69,22 +69,22 @@ class TransactionService(
         if (cashBalance + deposit < Int.MIN_VALUE + deposit) {
             throw InvalidTransactionException("Depositing more would result in an integer overflow.")
         }
-        val transaction = transactionRepository.save(TransactionDAO(userWalletDAO, deposit))
-        userWalletRepository.save(
+        val wallet = walletRepository.save(
             userWalletDAO.copy(
-                cashBalance = userWalletDAO.cashBalance + transaction.balanceChange,
-                latestTransaction = transaction
+                cashBalance = userWalletDAO.cashBalance + deposit,
+                latestTransaction = transactionRepository.save(TransactionDAO(userWalletDAO, deposit))
             )
         )
+        return UserWallet(userDAO, wallet)
     }
 
-    fun getOrCreateWalletForUser(userDAO: UserDAO): UserWalletDAO {
-        val userWalletQuery = userWalletRepository.findByUserId(userDAO.id)
-        return if (userWalletQuery.isPresent) {
-            userWalletQuery.get()
+    fun getOrCreateWalletForUser(userDAO: UserDAO): WalletDAO {
+        val userWalletDAO = walletRepository.findByUserId(userDAO.id)
+        return if (userWalletDAO.isPresent) {
+            userWalletDAO.get()
         } else {
-            userWalletRepository.save(
-                UserWalletDAO(
+            walletRepository.save(
+                WalletDAO(
                     user = userDAO,
                     cashBalance = 0,
                     totalSpent = 0

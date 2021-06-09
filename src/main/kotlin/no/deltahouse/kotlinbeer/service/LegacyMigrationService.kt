@@ -3,7 +3,7 @@ package no.deltahouse.kotlinbeer.service
 import no.deltahouse.kotlinbeer.database.LegacyRepository
 import no.deltahouse.kotlinbeer.database.TransactionRepository
 import no.deltahouse.kotlinbeer.database.UserRepository
-import no.deltahouse.kotlinbeer.database.UserWalletRepository
+import no.deltahouse.kotlinbeer.database.WalletRepository
 import no.deltahouse.kotlinbeer.model.constants.UserPropertyType
 import no.deltahouse.kotlinbeer.model.dao.*
 import org.springframework.beans.factory.annotation.Autowired
@@ -19,7 +19,7 @@ class LegacyMigrationService(
     @Autowired val userService: UserService,
     @Autowired val legacyRepository: LegacyRepository,
     @Autowired val transactionRepository: TransactionRepository,
-    @Autowired val userWalletRepository: UserWalletRepository
+    @Autowired val walletRepository: WalletRepository
 ) {
     init {
         try {
@@ -105,9 +105,9 @@ class LegacyMigrationService(
             .forEach {
                 val userDAO = userService.getUserDAOByCardId(it.cardId)
                 val userWalletDAO =
-                    userWalletRepository.save(UserWalletDAO(user = userDAO, cashBalance = 0, totalSpent = 0))
+                    walletRepository.save(WalletDAO(user = userDAO, cashBalance = 0, totalSpent = 0))
                 val transactionDAO = transactionRepository.save(TransactionDAO(userWalletDAO, it.cash.toShort()))
-                userWalletRepository.save(
+                walletRepository.save(
                     userWalletDAO.copy(
                         cashBalance = it.cash,
                         totalSpent = it.spent,

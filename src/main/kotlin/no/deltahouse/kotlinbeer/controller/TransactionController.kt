@@ -1,5 +1,6 @@
 package no.deltahouse.kotlinbeer.controller
 
+import no.deltahouse.kotlinbeer.model.dto.UserWalletDTO
 import no.deltahouse.kotlinbeer.service.TransactionService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PathVariable
@@ -17,7 +18,7 @@ class TransactionController(
     }
 
     @PostMapping("/users/{id}/deposit")
-    fun deposit(@PathVariable id: Long, @RequestParam value: Short) {
-        transactionService.deposit(id, value)
+    fun deposit(@PathVariable id: Long, @RequestParam value: Short): UserWalletDTO {
+        return UserWalletDTO(transactionService.deposit(id, value))
     }
 }

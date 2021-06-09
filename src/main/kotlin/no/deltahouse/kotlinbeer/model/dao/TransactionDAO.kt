@@ -11,7 +11,7 @@ data class TransactionDAO(
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_id_generator")
     val id: Long = -1,
     @ManyToOne(fetch = FetchType.LAZY)
-    val userWallet: UserWalletDAO,
+    val wallet: WalletDAO,
     val previousBalance: Int,
     val balanceChange: Short,
     val previousTransactionId: Long? = null,
@@ -19,9 +19,9 @@ data class TransactionDAO(
     @CreationTimestamp
     val transactionDate: ZonedDateTime = ZonedDateTime.now(),
 ) : Serializable {
-    constructor(wallet: UserWalletDAO, change: Short) : this(
+    constructor(wallet: WalletDAO, change: Short) : this(
         id = -1,
-        userWallet = wallet,
+        wallet = wallet,
         previousBalance = wallet.cashBalance,
         balanceChange = change,
         previousTransactionId = wallet.latestTransaction?.id,

@@ -4,12 +4,12 @@ import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.mockk
 import no.deltahouse.kotlinbeer.database.TransactionRepository
-import no.deltahouse.kotlinbeer.database.UserWalletRepository
+import no.deltahouse.kotlinbeer.database.WalletRepository
 import no.deltahouse.kotlinbeer.model.constants.UserPropertyType
 import no.deltahouse.kotlinbeer.model.dao.TransactionDAO
 import no.deltahouse.kotlinbeer.model.dao.UserDAO
 import no.deltahouse.kotlinbeer.model.dao.UserPropertyDAO
-import no.deltahouse.kotlinbeer.model.dao.UserWalletDAO
+import no.deltahouse.kotlinbeer.model.dao.WalletDAO
 import no.deltahouse.kotlinbeer.model.exceptions.InvalidTransactionException
 import no.deltahouse.kotlinbeer.model.exceptions.UserNotFoundException
 import org.junit.jupiter.api.*
@@ -22,7 +22,7 @@ import kotlin.test.Test
 internal class TransactionServiceTest {
 
     private val mockUserService = mockk<UserService>()
-    private val mockUserWalletRepository = mockk<UserWalletRepository>()
+    private val mockUserWalletRepository = mockk<WalletRepository>()
     private val mockTransactionRepository = mockk<TransactionRepository>()
 
     private val maxDepositValue = 1000
@@ -42,7 +42,7 @@ internal class TransactionServiceTest {
         createdBy = "Test"
     )
 
-    private val testUserWallet = UserWalletDAO(
+    private val testUserWallet = WalletDAO(
         id = 1,
         user = testUser,
         cashBalance = 100,
@@ -62,7 +62,7 @@ internal class TransactionServiceTest {
         createdBy = "Test"
     )
 
-    private val testUserWithCreditWallet = UserWalletDAO(
+    private val testUserWithCreditWallet = WalletDAO(
         id = 2,
         user = testUser,
         cashBalance = 100,
@@ -82,7 +82,7 @@ internal class TransactionServiceTest {
         createdBy = "Test"
     )
 
-    private val testUserWithBigCashBalanceWallet = UserWalletDAO(
+    private val testUserWithBigCashBalanceWallet = WalletDAO(
         id = 2,
         user = testUser,
         cashBalance = Int.MAX_VALUE,

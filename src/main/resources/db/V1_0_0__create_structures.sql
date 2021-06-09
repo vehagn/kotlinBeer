@@ -2,7 +2,7 @@
 create sequence if not exists user_id_generator start with 1 increment by 50;
 create sequence if not exists user_property_id_generator start with 1 increment by 50;
 create sequence if not exists item_id_generator start with 1 increment by 50;
-create sequence if not exists user_wallet_id_generator start with 1 increment by 50;
+create sequence if not exists wallet_id_generator start with 1 increment by 50;
 create sequence if not exists borrowed_item_id_generator start with 1 increment by 50;
 create sequence if not exists transaction_id_generator start with 1 increment by 50;
 
@@ -43,7 +43,7 @@ create table users_user_properties
     user_properties_id int8 unique not null
 );
 
-create table user_wallets
+create table wallets
 (
     id                    int8 primary key,
     user_id               int8 unique not null,
@@ -55,7 +55,7 @@ create table user_wallets
 create table transactions
 (
     id                      int8 primary key,
-    user_wallet_id          int8 not null,
+    wallet_id               int8 not null,
     previous_balance        int4 not null,
     balance_change          int2 not null,
     previous_transaction_id int8,
@@ -86,9 +86,9 @@ create table borrowed_items
 );
 
 -- Relations
-alter table user_wallets
+alter table wallets
     add constraint user_id foreign key (user_id) references users (id);
-alter table user_wallets
+alter table wallets
     add constraint latest_transaction foreign key (latest_transaction_id) references transactions (id);
 
 alter table users_user_properties
@@ -104,4 +104,4 @@ alter table borrowed_items
 alter table transactions
     add constraint previous_transaction_id foreign key (previous_transaction_id) references transactions (id);
 alter table transactions
-    add constraint user_wallet_id foreign key (user_wallet_id) references user_wallets (id);
+    add constraint user_wallet_id foreign key (wallet_id) references wallets (id);

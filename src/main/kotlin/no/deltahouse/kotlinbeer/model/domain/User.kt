@@ -17,29 +17,29 @@ class User(
     val isMember: Boolean,
     val creditRating: Byte?,
 ) {
-    constructor(user: UserDAO) : this(
-        user.cardId,
-        user.firstName,
-        user.lastName,
-        user.birthday,
-        user.email,
-        user.userProperties.find { it.type == UserPropertyType.TITLE }?.value,
-        user.userProperties.filter { it.type == UserPropertyType.COMMENT }.map { it.value },
-        user.studprog,
-        user.isMember,
-        user.userProperties.find { it.type == UserPropertyType.TAB }?.value?.toByte(),
+    constructor(userDAO: UserDAO) : this(
+        userDAO.cardId,
+        userDAO.firstName,
+        userDAO.lastName,
+        userDAO.birthday,
+        userDAO.email,
+        userDAO.userProperties.find { it.type == UserPropertyType.TITLE }?.value,
+        userDAO.userProperties.filter { it.type == UserPropertyType.COMMENT }.map { it.value },
+        userDAO.studprog,
+        userDAO.isMember,
+        userDAO.userProperties.find { it.type == UserPropertyType.TAB }?.value?.toByte(),
     )
 
-    constructor(user: UserDTO) : this(
-        user.cardId,
-        user.firstName,
-        user.lastName,
-        user.birthday,
-        user.username,
-        user.title,
-        user.comments,
-        user.studprog,
-        user.isMember,
-        user.creditRating,
+    constructor(userDTO: UserDTO) : this(
+        userDTO.cardId,
+        userDTO.firstName,
+        userDTO.lastName,
+        userDTO.birthday,
+        userDTO.username,
+        userDTO.title,
+        userDTO.comments,
+        userDTO.studprog,
+        userDTO.isMember,
+        userDTO.creditRating,
     )
 }
