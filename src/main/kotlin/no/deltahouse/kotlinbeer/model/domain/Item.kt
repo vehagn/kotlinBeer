@@ -7,6 +7,8 @@ class Item(item: ItemDAO) {
     val id: Long = item.id
     val name: String = item.name
     val description: String? = item.description
-    val created: ZonedDateTime = item.created
-    val changed: ZonedDateTime? = item.changed
+    val createdBy: String = item.createdBy
+    val createdDate: ZonedDateTime = item.createdDate
+    val changedBy: String? = item.changedBy
+    val changedDate: ZonedDateTime? = item.changedDate
 }

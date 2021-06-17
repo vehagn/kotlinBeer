@@ -11,21 +11,21 @@ data class TransactionDAO(
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_id_generator")
     val id: Long = -1,
     @ManyToOne(fetch = FetchType.LAZY)
-    val user: UserDAO,
+    val wallet: WalletDAO,
     val previousBalance: Int,
     val balanceChange: Short,
-    val hash: Long,
     val previousTransactionId: Long? = null,
+    val hash: Long?,
     @CreationTimestamp
     val transactionDate: ZonedDateTime = ZonedDateTime.now(),
 ) : Serializable {
-    constructor(user: UserDAO, change: Short) : this(
+    constructor(wallet: WalletDAO, change: Short) : this(
         id = -1,
-        user = user,
-        previousBalance = user.cashBalance,
+        wallet = wallet,
+        previousBalance = wallet.cashBalance,
         balanceChange = change,
-        // 977 is an arbitrary large prime number to avoid collisions
-        hash = 977 * (977 * ((user.latestTransaction?.hash
-            ?: 0) + 977 * (user.hashCode() + user.id))) + (user.latestTransaction?.hashCode() ?: 0)
+        previousTransactionId = wallet.latestTransaction?.id,
+        hash = 977 * (977 * ((wallet.latestTransaction?.hash
+            ?: 0) + 977 * wallet.cashBalance) + (wallet.latestTransaction?.transactionDate.hashCode())),
     )
 }

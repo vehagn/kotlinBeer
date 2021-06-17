@@ -1,5 +1,6 @@
 package no.deltahouse.kotlinbeer.model.dao
 
+import no.deltahouse.kotlinbeer.model.domain.User
 import org.hibernate.annotations.UpdateTimestamp
 import java.io.Serializable
 import java.time.ZonedDateTime
@@ -16,41 +17,36 @@ data class UserDAO(
     val firstName: String,
     @Column(length = 63, nullable = false)
     val lastName: String,
+    @Column(length = 63, nullable = false)
+    val email: String,
     val birthday: ZonedDateTime?,
-    @Column(length = 31, nullable = false)
-    val username: String,
     @Column(length = 31, nullable = true)
     val studprog: String?,
     val isMember: Boolean,
-    val creditRating: Byte?,
-    val cashBalance: Int,
-    val totalSpent: Int,
-    @OneToMany(cascade = [CascadeType.ALL])
-    @OrderBy(value = "changed DESC")
-    val userProperties: List<UserPropertyDAO>,
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OrderBy(value = "changed_date DESC")
+    val userProperties: Set<UserPropertyDAO>,
+    @Column(length = 15, nullable = false)
+    val createdBy: String,
     //@CreationTimestamp
-    val created: ZonedDateTime = ZonedDateTime.now(),
+    val createdDate: ZonedDateTime = ZonedDateTime.now(),
+    @Column(length = 15, nullable = true)
+    val changedBy: String? = null,
     @UpdateTimestamp
-    val changed: ZonedDateTime? = null,
+    val changedDate: ZonedDateTime? = null,
 ) : Serializable {
-    @OneToOne(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
-    var latestTransaction: TransactionDAO? = null
 
-    constructor(user: UserDAO, transaction: TransactionDAO) : this(
-        user.id,
+    constructor(user: User, userProperties: Set<UserPropertyDAO>, createdBy: String) : this(
+        -1,
         user.cardId,
         user.firstName,
         user.lastName,
+        user.email,
         user.birthday,
-        user.username,
         user.studprog,
         user.isMember,
-        user.creditRating,
-        user.cashBalance + transaction.balanceChange,
-        user.totalSpent + if (transaction.balanceChange > 0) transaction.balanceChange else 0,
-        user.userProperties,
-        user.created,
-    ) {
-        this.latestTransaction = transaction
-    }
+        userProperties,
+        createdBy
+    )
+
 }

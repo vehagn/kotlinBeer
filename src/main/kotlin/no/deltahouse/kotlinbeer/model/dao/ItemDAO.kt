@@ -15,8 +15,10 @@ data class ItemDAO(
     val name: String,
     @Column(length = 127)
     val description: String?,
+    val createdBy: String,
     @CreationTimestamp
-    val created: ZonedDateTime = ZonedDateTime.now(),
+    val createdDate: ZonedDateTime = ZonedDateTime.now(),
+    val changedBy: String? = null,
     @UpdateTimestamp
-    val changed: ZonedDateTime? = null,
+    val changedDate: ZonedDateTime? = null,
 ) : Serializable
