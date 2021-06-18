@@ -1,12 +1,15 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "2.4.5"
-    id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    id("org.springframework.boot") version "2.5.1"
+    id("com.google.cloud.tools.jib") version "3.1.1"
     kotlin("jvm") version "1.5.0"
     kotlin("plugin.spring") version "1.5.0"
     kotlin("plugin.jpa") version "1.5.0"
+
 }
+
+apply(plugin = "io.spring.dependency-management")
 
 group = "no.deltahouse"
 version = "0.0.1-SNAPSHOT"
@@ -23,8 +26,6 @@ repositories {
 }
 
 dependencies {
-    val mockkVersion = "1.10.6"
-
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-hateoas")
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
@@ -46,7 +47,7 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-test")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("io.mockk:mockk:${mockkVersion}")
+    testImplementation("io.mockk:mockk")
 }
 
 tasks.withType<KotlinCompile> {
@@ -62,4 +63,13 @@ tasks.test {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+jib {
+    from {
+        image = "openjdk:16-jdk-slim"
+    }
+    to {
+        image = "ewtestcontainerregistry.azurecr.io/kotlin-beer:latest"
+    }
 }
