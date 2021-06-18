@@ -26,6 +26,8 @@ repositories {
 }
 
 dependencies {
+    val mockkVersion = "1.10.6"
+
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-hateoas")
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
@@ -47,13 +49,13 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-test")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("io.mockk:mockk")
+    testImplementation("io.mockk:mockk:${mockkVersion}")
 }
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "16"
+        jvmTarget = "11"
     }
 }
 
@@ -66,9 +68,6 @@ tasks.withType<Test> {
 }
 
 jib {
-    from {
-        image = "openjdk:16-jdk-slim"
-    }
     to {
         image = "ewtestcontainerregistry.azurecr.io/kotlin-beer:latest"
     }
