@@ -21,4 +21,9 @@ steps:
     jdkArchitectureOption: 'x64'
     publishJUnitResults: true
     testResultsFiles: '**/TEST-*.xml'
-    tasks: 'build'
+    tasks: 'clean build test jacocoTestReport'
+
+- task: PublishCodeCoverageResults@1
+  inputs:
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/reports/jacoco/report.xml'
+    pathToSources: '$(System.DefaultWorkingDirectory)/src/main/kotlin'

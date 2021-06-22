@@ -3,6 +3,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.springframework.boot") version "2.5.1"
     id("com.google.cloud.tools.jib") version "3.1.1"
+    id("jacoco")
+    id("org.sonarqube") version "3.1.1"
     kotlin("jvm") version "1.5.0"
     kotlin("plugin.spring") version "1.5.0"
     kotlin("plugin.jpa") version "1.5.0"
@@ -11,7 +13,18 @@ plugins {
 
 apply(plugin = "io.spring.dependency-management")
 
-group = "no.deltahouse"
+jacoco {
+    toolVersion = "0.8.7"
+}
+
+tasks.withType(JacocoReport::class.java).all {
+    reports {
+        xml.isEnabled = true
+        xml.destination = File("$buildDir/reports/jacoco/report.xml")
+    }
+}
+
+group = "no.edgeworks"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_16
 
