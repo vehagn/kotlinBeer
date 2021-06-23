@@ -21,7 +21,10 @@ steps:
     jdkArchitectureOption: 'x64'
     publishJUnitResults: true
     testResultsFiles: '**/TEST-*.xml'
-    tasks: 'clean build test jacocoTestReport'
+    tasks: 'clean build test jacocoTestReport
+            jib -Djib.to.image=$(EWTestContainerRegistryURL)/kotlin-beer:latest
+            -Djib.to.auth.username=$(EWTestContainerRegistryUser)
+            -Djib.to.auth.password=$(EWTestContainerRegistryPW)'
 
 - task: PublishCodeCoverageResults@1
   inputs:

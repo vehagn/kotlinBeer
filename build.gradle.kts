@@ -26,7 +26,7 @@ tasks.withType(JacocoReport::class.java).all {
 
 group = "no.edgeworks"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_16
+java.sourceCompatibility = JavaVersion.VERSION_11
 
 configurations {
     compileOnly {
