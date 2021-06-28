@@ -82,6 +82,6 @@ tasks.withType<Test> {
 
 jib {
     to {
-        image = "ewtestcontainerregistry.azurecr.io/kotlin-beer:latest"
+        image = "ewtestcontainerregistry.azurecr.io/kotlin-beer:${version}"
     }
 }

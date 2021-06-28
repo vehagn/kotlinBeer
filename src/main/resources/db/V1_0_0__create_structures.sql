@@ -6,9 +6,6 @@ create sequence if not exists wallet_id_generator start with 1 increment by 50;
 create sequence if not exists borrowed_item_id_generator start with 1 increment by 50;
 create sequence if not exists transaction_id_generator start with 1 increment by 50;
 
--- Types
-create type user_property as enum ('TITLE', 'COMMENT', 'TAB', 'OTHER');
-
 -- Tables
 create table users
 (
@@ -29,10 +26,10 @@ create table users
 create table user_properties
 (
     id           int8 primary key,
-    type         user_property not null,
+    type         int4        not null,
     value        varchar(63),
-    created_by   varchar(15)   not null,
-    created_date timestamp     not null,
+    created_by   varchar(15) not null,
+    created_date timestamp   not null,
     changed_by   varchar(15),
     changed_date timestamp
 );
@@ -87,9 +84,9 @@ create table borrowed_items
 
 -- Relations
 alter table wallets
-    add constraint user_id foreign key (user_id) references users (id);
+    add constraint wallet_user_id foreign key (user_id) references users (id);
 alter table wallets
-    add constraint latest_transaction foreign key (latest_transaction_id) references transactions (id);
+    add constraint wallet_latest_transaction foreign key (latest_transaction_id) references transactions (id);
 
 alter table users_user_properties
     add constraint user_property_id foreign key (user_properties_id) references user_properties (id);

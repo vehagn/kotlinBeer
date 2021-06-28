@@ -2,7 +2,6 @@ package no.edgeworks.kotlinbeer.model.dao
 
 import no.edgeworks.kotlinbeer.model.constants.UserPropertyType
 import org.hibernate.annotations.CreationTimestamp
-import org.hibernate.annotations.Type
 import org.hibernate.annotations.UpdateTimestamp
 import java.io.Serializable
 import java.time.ZonedDateTime
@@ -10,8 +9,7 @@ import javax.persistence.*
 
 @Entity(name = "USER_PROPERTIES")
 data class UserPropertyDAO(
-    @Enumerated(EnumType.STRING)
-    @Type(type = "no.deltahouse.kotlinbeer.database.PostgreSQLEnumType")
+    @Enumerated(EnumType.ORDINAL)
     val type: UserPropertyType,
     @Column(length = 63, nullable = true)
     val value: String?,

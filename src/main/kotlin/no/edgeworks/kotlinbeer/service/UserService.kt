@@ -71,7 +71,7 @@ class UserService(
     fun setUserTitle(cardId: Long, title: String, responsible: String) {
         val userDAO = getUserDAOByCardId(cardId)
 
-        val userTitle = userDAO.userProperties.find { it.type == UserPropertyType.TITLE };
+        val userTitle = userDAO.userProperties.find { it.type == UserPropertyType.TITLE }
         if (userTitle == null) {
             val userProperties = userDAO.userProperties.toMutableSet()
             userProperties.add(UserPropertyDAO(UserPropertyType.TITLE, title, createdBy = responsible))
@@ -88,7 +88,7 @@ class UserService(
         if (creditRating == null) {
             val userProperties = userDAO.userProperties.toMutableSet()
             userProperties.add(UserPropertyDAO(UserPropertyType.TAB, rating.toString(), createdBy = responsible))
-            userRepository.save(userDAO.copy(userProperties = userProperties));
+            userRepository.save(userDAO.copy(userProperties = userProperties))
         } else {
             userPropertyRepository.save(creditRating.copy(value = rating.toString(), changedBy = responsible))
         }
