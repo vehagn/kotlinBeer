@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository
 @Repository
 class LegacyRepository(@Autowired val jdbcTemplate: NamedParameterJdbcTemplate) {
     fun getUsers(): List<LegacyUserDAO> {
-        val sqlQuery = "SELECT * FROM dreg_persons"
+        val sqlQuery = "SELECT * FROM legacy_users"
         return jdbcTemplate.query(sqlQuery, DataClassRowMapper.newInstance(LegacyUserDAO::class.java))
     }
 }
