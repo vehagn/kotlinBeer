@@ -1,0 +1,17 @@
+datasource-url: jdbc:postgresql://localhost:5432/postgres
+datasource-username: postgres
+datasource-password: password
+
+azure:
+  keyvault:
+    enabled: false
+
+spring:
+  flyway:
+    enabled: true
+  devtools:
+    add-properties: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true

@@ -1,9 +1,10 @@
-# Fetch datasource values from Azure Key Vault
-# azure.keyvault.{uri, client-id, client-key, tenant-id} should be provided at runtime
+datasource-url: jdbc:h2:mem:db/test;DB_CLOSE_DELAY=-1
+datasource-username: sa
+datasource-password: sa
+
 azure:
   keyvault:
-    enabled: true
-    secret-keys: datasource-url,datasource-username,datasource-password
+    enabled: false
 
 spring:
   datasource:
@@ -15,7 +16,15 @@ spring:
     url: ${datasource-url}
     user: ${datasource-username}
     password: ${datasource-password}
+    locations: classpath:db/migration,classpath:db/testdata
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: none
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+
+server:
+  shutdown: graceful
 

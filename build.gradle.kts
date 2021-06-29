@@ -40,29 +40,37 @@ repositories {
 
 dependencies {
     val mockkVersion = "1.10.6"
+    val h2Version = "1.4.196"
+    val flywayVersion = "7.8.2"
+    val azureKeyvaultVersion = "3.6.0"
 
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-hateoas")
-    implementation("org.springframework.boot:spring-boot-starter-jdbc")
-    implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-
-    runtimeOnly("org.postgresql:postgresql")
-    implementation("com.h2database:h2:1.4.196")
-    implementation("org.flywaydb:flyway-core:7.8.2")
+    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
 
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
-    runtimeOnly("mysql:mysql-connector-java")
-    annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
-    annotationProcessor("org.projectlombok:lombok")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+    implementation("com.azure.spring:azure-spring-boot-starter-keyvault-secrets:${azureKeyvaultVersion}")
+
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    //implementation("org.springframework.boot:spring-boot-starter-hateoas")
+    implementation("org.springframework.boot:spring-boot-starter-jdbc")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+
+    implementation("org.flywaydb:flyway-core:${flywayVersion}")
+    runtimeOnly("org.postgresql:postgresql")
+    runtimeOnly("com.h2database:h2:${h2Version}")
+
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
 
+    testImplementation("org.flywaydb:flyway-core:${flywayVersion}")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("io.mockk:mockk:${mockkVersion}")
+    testRuntimeOnly("com.h2database:h2:${h2Version}")
 }
 
 tasks.withType<KotlinCompile> {
@@ -82,6 +90,6 @@ tasks.withType<Test> {
 
 jib {
     to {
-        image = "ewtestcontainerregistry.azurecr.io/kotlin-beer:${version}"
+        image = "ewtestcontainerregistry.azurecr.io/${rootProject.name}:${version}"
     }
 }
