@@ -27,4 +27,3 @@ spring:
 
 server:
   shutdown: graceful
-

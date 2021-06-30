@@ -1,4 +1,4 @@
-datasource-url: jdbc:h2:mem:db/beer
+datasource-url: jdbc:h2:mem:db/beer;DB_CLOSE_DELAY=-1
 datasource-username: sa
 datasource-password: sa
 
@@ -13,8 +13,14 @@ spring:
     add-properties: true
   jpa:
     hibernate:
-      ddl-auto: validate
-    show-sql: false
+      ddl-auto: create
+    show-sql: true
   h2:
     console:
       enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

@@ -19,3 +19,12 @@ spring:
     hibernate:
       ddl-auto: validate
 
+server:
+  shutdown: graceful
+
+management:
+  endpoints:
+   web:
+     exposure:
+       include: health, metrics
+
