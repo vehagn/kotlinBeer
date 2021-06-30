@@ -8,7 +8,7 @@ class UserDTO(user: User) {
     val firstName: String = user.firstName
     val lastName: String = user.lastName
     val birthday: ZonedDateTime? = user.birthday
-    val username: String = user.email
+    val email: String = user.email
     val title: String? = user.title
     val comments: List<String?> = user.comments
     val studprog: String? = user.studprog

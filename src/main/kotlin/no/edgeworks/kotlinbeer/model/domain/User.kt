@@ -27,19 +27,19 @@ class User(
         userDAO.userProperties.filter { it.type == UserPropertyType.COMMENT }.map { it.value },
         userDAO.studprog,
         userDAO.isMember,
-        userDAO.userProperties.find { it.type == UserPropertyType.TAB }?.value?.toByte(),
+        userDAO.userProperties.find { it.type == UserPropertyType.CREDIT }?.value?.toByte(),
     )
 
     constructor(userDTO: UserDTO) : this(
-        userDTO.cardId,
-        userDTO.firstName,
-        userDTO.lastName,
-        userDTO.birthday,
-        userDTO.username,
-        userDTO.title,
-        userDTO.comments,
-        userDTO.studprog,
-        userDTO.isMember,
-        userDTO.creditRating,
+        cardId = userDTO.cardId,
+        firstName = userDTO.firstName,
+        lastName = userDTO.lastName,
+        birthday = userDTO.birthday,
+        email = userDTO.email,
+        title = userDTO.title,
+        comments = userDTO.comments,
+        studprog = userDTO.studprog,
+        isMember = userDTO.isMember,
+        creditRating = userDTO.creditRating,
     )
 }

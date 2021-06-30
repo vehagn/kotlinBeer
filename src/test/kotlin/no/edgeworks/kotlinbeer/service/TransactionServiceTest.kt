@@ -58,7 +58,7 @@ internal class TransactionServiceTest {
         birthday = ZonedDateTime.now().minusYears(20),
         studprog = "BFY",
         isMember = true,
-        userProperties = setOf(UserPropertyDAO(UserPropertyType.TAB, "2", "Test")),
+        userProperties = setOf(UserPropertyDAO(UserPropertyType.CREDIT, "2", "Test")),
         createdBy = "Test"
     )
 
@@ -78,7 +78,7 @@ internal class TransactionServiceTest {
         birthday = ZonedDateTime.now().minusYears(20),
         studprog = "BFY",
         isMember = true,
-        userProperties = setOf(UserPropertyDAO(UserPropertyType.TAB, "2", "Test")),
+        userProperties = setOf(UserPropertyDAO(UserPropertyType.CREDIT, "2", "Test")),
         createdBy = "Test"
     )
 
@@ -124,12 +124,12 @@ internal class TransactionServiceTest {
 
             assertTrue { testUserWallet.cashBalance < maxPurchaseValue }
             assertEquals(testUserWallet.cashBalance, 100)
-            assertNull(testUser.userProperties.find { it.type == UserPropertyType.TAB })
+            assertNull(testUser.userProperties.find { it.type == UserPropertyType.CREDIT })
 
             assertTrue { testUserWithCreditWallet.cashBalance < maxPurchaseValue }
             assertEquals(testUserWithCreditWallet.cashBalance, 100)
-            assertNotNull(testUserWithCredit.userProperties.find { it.type == UserPropertyType.TAB })
-            assertEquals(testUserWithCredit.userProperties.find { it.type == UserPropertyType.TAB }?.value?.toByte(), 2)
+            assertNotNull(testUserWithCredit.userProperties.find { it.type == UserPropertyType.CREDIT })
+            assertEquals(testUserWithCredit.userProperties.find { it.type == UserPropertyType.CREDIT }?.value?.toByte(), 2)
 
             assertEquals(testUserWithBigCashBalanceWallet.cashBalance, Int.MAX_VALUE)
         }

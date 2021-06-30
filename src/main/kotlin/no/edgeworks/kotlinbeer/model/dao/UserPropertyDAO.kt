@@ -9,7 +9,8 @@ import javax.persistence.*
 
 @Entity(name = "USER_PROPERTIES")
 data class UserPropertyDAO(
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
+    @Column(length = 15, nullable = false)
     val type: UserPropertyType,
     @Column(length = 63, nullable = true)
     val value: String?,

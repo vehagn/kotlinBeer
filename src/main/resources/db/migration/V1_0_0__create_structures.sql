@@ -26,7 +26,7 @@ create table users
 create table user_properties
 (
     id           int8 primary key,
-    type         int4        not null,
+    type         varchar(15) not null,
     value        varchar(63),
     created_by   varchar(15) not null,
     created_date timestamp   not null,

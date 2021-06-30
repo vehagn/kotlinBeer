@@ -37,14 +37,14 @@ class UserService(
             userProperties.add(UserPropertyDAO(UserPropertyType.TITLE, user.title, createdBy))
         }
         if (user.creditRating != null && user.creditRating.toByte() > 0) {
-            userProperties.add(UserPropertyDAO(UserPropertyType.COMMENT, user.creditRating.toString(), createdBy))
+            userProperties.add(UserPropertyDAO(UserPropertyType.CREDIT, user.creditRating.toString(), createdBy))
         }
         user.comments.forEach { userProperties.add(UserPropertyDAO(UserPropertyType.COMMENT, it, createdBy)) }
 
         return User(userRepository.save(UserDAO(user, userProperties, createdBy)))
     }
 
-    fun updateUser(updatedUser: User, changedBy: String) {
+    fun updateUserBasicDetails(updatedUser: User, changedBy: String) {
         val userDAO = getUserDAOByCardId(updatedUser.cardId)
         userRepository.save(
             userDAO.copy(
@@ -84,10 +84,10 @@ class UserService(
     fun setUserCreditRating(cardId: Long, rating: Byte, responsible: String) {
         val userDAO = getUserDAOByCardId(cardId)
 
-        val creditRating = userDAO.userProperties.find { it.type == UserPropertyType.TAB }
+        val creditRating = userDAO.userProperties.find { it.type == UserPropertyType.CREDIT }
         if (creditRating == null) {
             val userProperties = userDAO.userProperties.toMutableSet()
-            userProperties.add(UserPropertyDAO(UserPropertyType.TAB, rating.toString(), createdBy = responsible))
+            userProperties.add(UserPropertyDAO(UserPropertyType.CREDIT, rating.toString(), createdBy = responsible))
             userRepository.save(userDAO.copy(userProperties = userProperties))
         } else {
             userPropertyRepository.save(creditRating.copy(value = rating.toString(), changedBy = responsible))

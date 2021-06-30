@@ -31,8 +31,8 @@ class UserController(
     }
 
     @PatchMapping("/users")
-    fun updateUser(@RequestBody updatedUser: UserDTO): UserDTO {
-        userService.updateUser(User(updatedUser), "changed")
+    fun updateUserBasicDetails(@RequestBody updatedUser: UserDTO): UserDTO {
+        userService.updateUserBasicDetails(User(updatedUser), "changed")
         return UserDTO(userService.getUserByCardId(updatedUser.cardId))
     }
 

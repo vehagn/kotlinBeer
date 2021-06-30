@@ -67,7 +67,7 @@ class LegacyMigrationService(
                 )
                 if (it.tab > 0) userProperties.add(
                     UserPropertyDAO(
-                        type = UserPropertyType.TAB,
+                        type = UserPropertyType.CREDIT,
                         value = it.tab.toString(),
                         createdBy = "Migration"
                     )

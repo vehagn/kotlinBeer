@@ -16,7 +16,7 @@ class UserWallet(
     constructor(userDAO: UserDAO, walletDAO: WalletDAO) : this(
         cardId = userDAO.cardId,
         name = userDAO.firstName + " " + userDAO.lastName,
-        creditRating = userDAO.userProperties.find { it.type == UserPropertyType.TAB }?.value?.toByte(),
+        creditRating = userDAO.userProperties.find { it.type == UserPropertyType.CREDIT }?.value?.toByte(),
         cashBalance = walletDAO.cashBalance,
         totalSpent = walletDAO.totalSpent,
         latestTransaction = walletDAO.latestTransaction?.let { Transaction(it) }
