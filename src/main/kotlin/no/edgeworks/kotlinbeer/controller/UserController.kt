@@ -6,9 +6,11 @@ import no.edgeworks.kotlinbeer.model.domain.User
 import no.edgeworks.kotlinbeer.model.dto.UserDTO
 import no.edgeworks.kotlinbeer.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
 
 @RestController
+@RequestMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
 class UserController(
     @Autowired val userService: UserService,
     @Autowired val legacyRepository: LegacyRepository,

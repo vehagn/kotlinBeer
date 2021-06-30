@@ -3,12 +3,11 @@ package no.edgeworks.kotlinbeer.controller
 import no.edgeworks.kotlinbeer.model.dto.UserWalletDTO
 import no.edgeworks.kotlinbeer.service.TransactionService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.http.MediaType
+import org.springframework.web.bind.annotation.*
 
 @RestController
+@RequestMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
 class TransactionController(
     @Autowired val transactionService: TransactionService,
 ) {

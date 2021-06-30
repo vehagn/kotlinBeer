@@ -24,7 +24,7 @@ server:
 
 management:
   endpoints:
-   web:
-     exposure:
-       include: health, metrics
+    web:
+      exposure:
+        include: health, metrics
 

@@ -1,13 +1,13 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "2.5.1"
+    id("org.springframework.boot") version "2.5.2"
     id("com.google.cloud.tools.jib") version "3.1.1"
     id("jacoco")
-    id("org.sonarqube") version "3.1.1"
-    kotlin("jvm") version "1.5.0"
-    kotlin("plugin.spring") version "1.5.0"
-    kotlin("plugin.jpa") version "1.5.0"
+    id("org.sonarqube") version "3.3"
+    kotlin("jvm") version "1.5.20"
+    kotlin("plugin.spring") version "1.5.20"
+    kotlin("plugin.jpa") version "1.5.20"
 
 }
 
@@ -39,9 +39,9 @@ repositories {
 }
 
 dependencies {
-    val mockkVersion = "1.10.6"
-    val h2Version = "1.4.196"
-    val flywayVersion = "7.8.2"
+    val mockkVersion = "1.11.0"
+    val h2Version = "1.4.200"
+    val flywayVersion = "7.10.0"
     val azureKeyvaultVersion = "3.6.0"
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")

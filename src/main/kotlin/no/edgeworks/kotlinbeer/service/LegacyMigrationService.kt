@@ -80,11 +80,11 @@ class LegacyMigrationService(
                     birthday = when {
                         it.birthday == "unknown" -> null
                         Integer.parseInt(it.birthday, 4, 6, 10) > 50 -> ZonedDateTime.parse(
-                            it.birthday + " - 00:00:00 Europe/Oslo",
+                            it.birthday + " - 12:00:00 UTC",
                             DateTimeFormatter.ofPattern("ddMMyy - HH:mm:ss z")
                         ).minusYears(100)
                         else -> ZonedDateTime.parse(
-                            it.birthday + " - 00:00:00 Europe/Oslo",
+                            it.birthday + " - 12:00:00 UTC",
                             DateTimeFormatter.ofPattern("ddMMyy - HH:mm:ss z")
                         )
                     },
