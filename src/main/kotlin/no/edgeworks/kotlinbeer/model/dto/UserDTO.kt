@@ -3,15 +3,28 @@ package no.edgeworks.kotlinbeer.model.dto
 import no.edgeworks.kotlinbeer.model.domain.User
 import java.time.ZonedDateTime
 
-class UserDTO(user: User) {
-    val cardId: Long = user.cardId
-    val firstName: String = user.firstName
-    val lastName: String = user.lastName
-    val birthday: ZonedDateTime? = user.birthday
-    val email: String = user.email
-    val title: String? = user.title
-    val comments: List<String?> = user.comments
-    val studprog: String? = user.studprog
-    val isMember: Boolean = user.isMember
-    val creditRating: Byte? = user.creditRating
+class UserDTO(
+    val cardId: Long,
+    val firstName: String,
+    val lastName: String,
+    val email: String,
+    val birthday: ZonedDateTime?,
+    val title: String?,
+    val comments: List<String?>,
+    val studprog: String?,
+    val isMember: Boolean,
+    val creditRating: Byte?
+) {
+    constructor(user: User) : this(
+        cardId = user.cardId,
+        firstName = user.firstName,
+        lastName = user.lastName,
+        birthday = user.birthday,
+        email = user.email,
+        title = user.title,
+        comments = user.comments,
+        studprog = user.studprog,
+        isMember = user.isMember,
+        creditRating = user.creditRating
+    )
 }

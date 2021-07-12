@@ -7,23 +7,9 @@ azure:
     enabled: false
 
 spring:
-  datasource:
-    url: ${datasource-url}
-    username: ${datasource-username}
-    password: ${datasource-password}
   flyway:
-    enabled: true
-    url: ${datasource-url}
-    user: ${datasource-username}
-    password: ${datasource-password}
-    locations: classpath:db/migration,classpath:db/testdata
+    enabled: false #We perform a manual migration in the integration tests
   jpa:
     hibernate:
       ddl-auto: none
-    show-sql: true
-  h2:
-    console:
-      enabled: true
-
-server:
-  shutdown: graceful
+    show-sql: false

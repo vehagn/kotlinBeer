@@ -8,6 +8,7 @@ import no.edgeworks.kotlinbeer.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.*
+import java.time.ZonedDateTime
 
 @RestController
 @RequestMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
@@ -22,11 +23,26 @@ class UserController(
 
     @GetMapping("/new")
     fun getNew(): List<UserDTO> {
+
+        val userDTO = UserDTO(
+            cardId = 100L,
+            firstName = "FirstName",
+            lastName = "LastName",
+            email = "test@test.no",
+            birthday = ZonedDateTime.now(),
+            title = "title",
+            comments = listOf("comment"),
+            studprog = "BFY",
+            isMember = true,
+            creditRating = 1
+        )
+
+        this.createUser(userDTO)
         return userService.getAllUsers().map { UserDTO(it) }
     }
 
     @GetMapping("/users/{cardId}")
-    fun getUserById(@PathVariable cardId: Long): UserDTO {
+    fun getUserByCardId(@PathVariable cardId: Long): UserDTO {
         return UserDTO(userService.getUserByCardId(cardId))
     }
 

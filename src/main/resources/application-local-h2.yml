@@ -13,7 +13,7 @@ spring:
     add-properties: true
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     show-sql: true
   h2:
     console:

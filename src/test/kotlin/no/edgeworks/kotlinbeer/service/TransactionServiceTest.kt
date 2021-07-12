@@ -84,7 +84,7 @@ internal class TransactionServiceTest {
 
     private val testUserWithBigCashBalanceWallet = WalletDAO(
         id = 2,
-        user = testUser,
+        user = testUserWithBigCashBalance,
         cashBalance = Int.MAX_VALUE,
         totalSpent = Int.MAX_VALUE,
     )
@@ -129,7 +129,10 @@ internal class TransactionServiceTest {
             assertTrue { testUserWithCreditWallet.cashBalance < maxPurchaseValue }
             assertEquals(testUserWithCreditWallet.cashBalance, 100)
             assertNotNull(testUserWithCredit.userProperties.find { it.type == UserPropertyType.CREDIT })
-            assertEquals(testUserWithCredit.userProperties.find { it.type == UserPropertyType.CREDIT }?.value?.toByte(), 2)
+            assertEquals(
+                testUserWithCredit.userProperties.find { it.type == UserPropertyType.CREDIT }?.value?.toByte(),
+                2
+            )
 
             assertEquals(testUserWithBigCashBalanceWallet.cashBalance, Int.MAX_VALUE)
         }

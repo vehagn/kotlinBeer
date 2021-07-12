@@ -23,7 +23,7 @@ data class UserDAO(
     @Column(length = 31, nullable = true)
     val studprog: String?,
     val isMember: Boolean,
-    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
+    @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
     @OrderBy(value = "changed_date DESC")
     val userProperties: Set<UserPropertyDAO>,
     @Column(length = 15, nullable = false)

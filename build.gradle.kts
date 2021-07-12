@@ -90,6 +90,7 @@ tasks.withType<Test> {
 
 jib {
     to {
-        image = "ewtestcontainerregistry.azurecr.io/${rootProject.name}:${version}"
+        //image = "ewtestcontainerregistry.azurecr.io/${rootProject.name}:${version}"
+        image = "ewtestcontainerregistry.azurecr.io/${rootProject.name}:latest"
     }
 }
