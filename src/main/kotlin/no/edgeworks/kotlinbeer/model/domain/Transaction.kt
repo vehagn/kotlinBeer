@@ -3,9 +3,16 @@ package no.edgeworks.kotlinbeer.model.domain
 import no.edgeworks.kotlinbeer.model.dao.TransactionDAO
 import java.time.ZonedDateTime
 
-class Transaction(transaction: TransactionDAO) {
-    val walletId = transaction.wallet.id
-    val previousBalance: Int = transaction.previousBalance
-    val balanceChange: Short = transaction.balanceChange
-    val transactionDate: ZonedDateTime = transaction.transactionDate
+class Transaction(
+    val walletId: Long,
+    val previousBalance: Int,
+    val balanceChange: Short,
+    val transactionDate: ZonedDateTime,
+) {
+    constructor(transaction: TransactionDAO) : this(
+        walletId = transaction.wallet.id,
+        previousBalance = transaction.previousBalance,
+        balanceChange = transaction.balanceChange,
+        transactionDate = transaction.transactionDate
+    )
 }

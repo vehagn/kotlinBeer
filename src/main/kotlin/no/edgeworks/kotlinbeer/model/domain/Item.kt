@@ -3,12 +3,22 @@ package no.edgeworks.kotlinbeer.model.domain
 import no.edgeworks.kotlinbeer.model.dao.ItemDAO
 import java.time.ZonedDateTime
 
-class Item(item: ItemDAO) {
-    val id: Long = item.id
-    val name: String = item.name
-    val description: String? = item.description
-    val createdBy: String = item.createdBy
-    val createdDate: ZonedDateTime = item.createdDate
-    val changedBy: String? = item.changedBy
-    val changedDate: ZonedDateTime? = item.changedDate
+class Item(
+    val id: Long,
+    val name: String,
+    val description: String?,
+    val createdBy: String,
+    val createdDate: ZonedDateTime,
+    val changedBy: String?,
+    val changedDate: ZonedDateTime?
+) {
+    constructor(item: ItemDAO) : this(
+        id = item.id,
+        name = item.name,
+        description = item.description,
+        createdBy = item.createdBy,
+        createdDate = item.createdDate,
+        changedBy = item.changedBy,
+        changedDate = item.changedDate
+    )
 }

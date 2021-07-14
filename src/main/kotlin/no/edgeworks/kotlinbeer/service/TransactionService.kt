@@ -28,7 +28,8 @@ class TransactionService(
         val userDAO = userService.getUserDAOByCardId(cardId)
         val userWalletDAO = getOrCreateWalletForUser(userDAO)
 
-        val creditRating = userDAO.userProperties.find { it.type == UserPropertyType.CREDIT }?.value?.toByte() ?: 0
+        val creditRating =
+            userDAO.userProperties.find { it.type == UserPropertyType.CREDIT }?.value?.toByte()?.takeIf { it >= 0 } ?: 0
         val cashBalance = userWalletDAO.cashBalance
 
         if (change > maxPurchaseValue) {

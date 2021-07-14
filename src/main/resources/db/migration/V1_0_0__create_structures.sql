@@ -20,7 +20,8 @@ create table users
     created_by   varchar(15)        not null,
     created_date timestamp          not null,
     changed_by   varchar(15),
-    changed_date timestamp
+    changed_date timestamp,
+    deleted_date timestamp
 );
 
 create table user_properties

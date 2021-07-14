@@ -34,6 +34,7 @@ data class UserDAO(
     val changedBy: String? = null,
     @UpdateTimestamp
     val changedDate: ZonedDateTime? = null,
+    val deletedDate: ZonedDateTime? = null,
 ) : Serializable {
 
     constructor(user: User, userProperties: Set<UserPropertyDAO>, createdBy: String) : this(

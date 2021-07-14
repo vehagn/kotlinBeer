@@ -3,14 +3,14 @@ package no.edgeworks.kotlinbeer.model.dto
 import no.edgeworks.kotlinbeer.model.domain.User
 import java.time.ZonedDateTime
 
-class UserDTO(
+data class UserDTO(
     val cardId: Long,
     val firstName: String,
     val lastName: String,
     val email: String,
     val birthday: ZonedDateTime?,
     val title: String?,
-    val comments: List<String?>,
+    val comments: Set<String>,
     val studprog: String?,
     val isMember: Boolean,
     val creditRating: Byte?
