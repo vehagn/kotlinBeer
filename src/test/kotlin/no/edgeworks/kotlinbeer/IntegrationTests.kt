@@ -1,16 +1,10 @@
 package no.edgeworks.kotlinbeer
 
-import no.edgeworks.kotlinbeer.controller.TransactionController
-import no.edgeworks.kotlinbeer.controller.UserController
-import no.edgeworks.kotlinbeer.database.UserRepository
-import no.edgeworks.kotlinbeer.model.domain.User
-import no.edgeworks.kotlinbeer.model.dto.UserDTO
-import no.edgeworks.kotlinbeer.model.exceptions.CardIsAlreadyRegisteredException
-import no.edgeworks.kotlinbeer.model.exceptions.EmailIsAlreadyRegisteredException
-import no.edgeworks.kotlinbeer.model.exceptions.UserIsDeletedException
-import no.edgeworks.kotlinbeer.model.exceptions.UserNotFoundException
-import no.edgeworks.kotlinbeer.service.TransactionService
-import no.edgeworks.kotlinbeer.service.UserService
+import no.edgeworks.kotlinbeer.exceptions.CardIsAlreadyRegisteredException
+import no.edgeworks.kotlinbeer.exceptions.EmailIsAlreadyRegisteredException
+import no.edgeworks.kotlinbeer.exceptions.UserIsDeletedException
+import no.edgeworks.kotlinbeer.exceptions.UserNotFoundException
+import no.edgeworks.kotlinbeer.user.*
 import org.flywaydb.core.Flyway
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Test
@@ -25,7 +19,7 @@ import kotlin.test.*
 
 @SpringBootTest
 @ActiveProfiles("test")
-@Transactional // Rollback after each test
+@Transactional // Rollback database after each test
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class IntegrationTests {
 
