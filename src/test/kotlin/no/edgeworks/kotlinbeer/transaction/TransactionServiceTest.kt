@@ -12,11 +12,11 @@ import no.edgeworks.kotlinbeer.user.UserService
 import no.edgeworks.kotlinbeer.wallet.WalletDAO
 import no.edgeworks.kotlinbeer.wallet.WalletRepository
 import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.DynamicTest.dynamicTest
 import java.time.ZonedDateTime
 import java.util.*
 import kotlin.test.*
-import kotlin.test.Test
 
 internal class TransactionServiceTest {
 
@@ -35,7 +35,7 @@ internal class TransactionServiceTest {
         lastName = "Testusen",
         email = "test",
         birthday = ZonedDateTime.now().minusYears(20),
-        studprog = "BFY",
+        userGroup = "BFY",
         isMember = true,
         userProperties = Collections.emptySet(),
         createdBy = "Test"
@@ -55,7 +55,7 @@ internal class TransactionServiceTest {
         lastName = "Testusen",
         email = "test",
         birthday = ZonedDateTime.now().minusYears(20),
-        studprog = "BFY",
+        userGroup = "BFY",
         isMember = true,
         userProperties = setOf(UserPropertyDAO(UserPropertyType.CREDIT, "2", "Test")),
         createdBy = "Test"
@@ -75,7 +75,7 @@ internal class TransactionServiceTest {
         lastName = "Testusen",
         email = "test",
         birthday = ZonedDateTime.now().minusYears(20),
-        studprog = "BFY",
+        userGroup = "BFY",
         isMember = true,
         userProperties = setOf(UserPropertyDAO(UserPropertyType.CREDIT, "2", "Test")),
         createdBy = "Test"
@@ -89,7 +89,7 @@ internal class TransactionServiceTest {
     )
 
     @InjectMockKs
-    private val transactionService: TransactionService = TransactionService(
+    private val transactionService = TransactionService(
         mockUserService,
         mockUserWalletRepository,
         mockTransactionRepository,
@@ -101,7 +101,7 @@ internal class TransactionServiceTest {
     @Nested
     @DisplayName("TransactionService::purchase() test")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    inner class Purchase {
+    inner class PurchaseFunctionTest {
         @BeforeEach
         fun init() {
             every { mockUserService.getUserDAOByCardId(1) } returns testUser
@@ -255,7 +255,7 @@ internal class TransactionServiceTest {
     @Nested
     @DisplayName("TransactionService::deposit() tests")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    inner class Deposit {
+    inner class DepositFunctionTests {
 
         @BeforeEach
         fun init() {

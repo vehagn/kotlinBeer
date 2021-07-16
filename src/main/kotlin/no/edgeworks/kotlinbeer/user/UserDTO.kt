@@ -10,7 +10,7 @@ data class UserDTO(
     val birthday: ZonedDateTime?,
     val title: String?,
     val comments: Set<String>,
-    val studprog: String?,
+    val userGroup: String?,
     val isMember: Boolean,
     val creditRating: Byte?
 ) {
@@ -22,7 +22,7 @@ data class UserDTO(
         email = user.email,
         title = user.title,
         comments = user.comments,
-        studprog = user.studprog,
+        userGroup = user.userGroup,
         isMember = user.isMember,
         creditRating = user.creditRating
     )

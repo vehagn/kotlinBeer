@@ -87,7 +87,7 @@ class LegacyMigrationService(
                             DateTimeFormatter.ofPattern("ddMMyy - HH:mm:ss z")
                         )
                     },
-                    studprog = it.studprog,
+                    userGroup = it.studprog,
                     isMember = it.membership == 1,
                     userProperties = userProperties,
                     createdBy = "Migration",

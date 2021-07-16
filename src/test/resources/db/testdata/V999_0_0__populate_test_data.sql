@@ -1,13 +1,13 @@
 -- Create test users
-INSERT INTO users (id, card_id, first_name, last_name, email, birthday, studprog, is_member, created_by, created_date,
+INSERT INTO users (id, card_id, first_name, last_name, email, birthday, user_group, is_member, created_by, created_date,
                    changed_by, changed_date)
 VALUES (1, 12346, 'Kari', 'Nordmann', 'karnor@stud.ntnu.no', '1994-04-06 14:00:00.000000', 'BMAT', true, 'Migration',
         '2016-10-15 00:24:03.000000', null, '2021-07-12 18:39:20.039756');
-INSERT INTO users (id, card_id, first_name, last_name, email, birthday, studprog, is_member, created_by, created_date,
+INSERT INTO users (id, card_id, first_name, last_name, email, birthday, user_group, is_member, created_by, created_date,
                    changed_by, changed_date)
 VALUES (2, 12345, 'Ola', 'Nordmann', 'olanor@stud.ntnu.no', '1990-04-23 14:00:00.000000', 'BFY', true, 'Migration',
         '2013-10-31 14:55:53.000000', null, '2021-07-12 18:39:20.052869');
-INSERT INTO users (id, card_id, first_name, last_name, email, birthday, studprog, is_member, created_by, created_date,
+INSERT INTO users (id, card_id, first_name, last_name, email, birthday, user_group, is_member, created_by, created_date,
                    changed_by, changed_date)
 VALUES (3, 10, 'Erich Christian', 'Dahl', 'ecdahls@stud.ntnu.no', '2014-02-12 13:00:00.000000', 'Dahls', true,
         'Migration', '1970-01-01 01:00:00.000000', null, '2021-07-12 18:39:20.057486');

@@ -20,7 +20,7 @@ data class UserDAO(
     val email: String,
     val birthday: ZonedDateTime?,
     @Column(length = 31, nullable = true)
-    val studprog: String?,
+    val userGroup: String?,
     val isMember: Boolean,
     @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true, fetch = FetchType.EAGER)
     @OrderBy(value = "changed_date DESC")
@@ -36,17 +36,31 @@ data class UserDAO(
     val deletedDate: ZonedDateTime? = null,
 ) : Serializable {
 
-    constructor(user: User, userProperties: Set<UserPropertyDAO>, createdBy: String) : this(
+    constructor(user: User, createdBy: String) : this(
         -1,
         user.cardId,
         user.firstName,
         user.lastName,
         user.email,
         user.birthday,
-        user.studprog,
+        user.userGroup,
         user.isMember,
-        userProperties,
+        getUserProperties(user, createdBy),
         createdBy
     )
+
+    companion object {
+        private fun getUserProperties(user: User, createdBy: String): Set<UserPropertyDAO> {
+            val userProperties = mutableSetOf<UserPropertyDAO>()
+            if (user.title != null) {
+                userProperties.add(UserPropertyDAO(UserPropertyType.TITLE, user.title, createdBy))
+            }
+            if (user.creditRating != null && user.creditRating.toByte() > 0) {
+                userProperties.add(UserPropertyDAO(UserPropertyType.CREDIT, user.creditRating.toString(), createdBy))
+            }
+            user.comments.forEach { userProperties.add(UserPropertyDAO(UserPropertyType.COMMENT, it, createdBy)) }
+            return userProperties
+        }
+    }
 
 }

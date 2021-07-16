@@ -29,20 +29,17 @@ class UserController(
 
     @PostMapping("/users")
     fun createUser(@RequestBody newUser: UserDTO): UserDTO {
-        userService.createUser(User(newUser), "new")
-        return UserDTO(userService.getUserByCardId(newUser.cardId))
+        return UserDTO(userService.createUser(User(newUser), "new"))
     }
 
     @PatchMapping("/users")
     fun updateUserDetails(@RequestBody updatedUser: UserDTO): UserDTO {
-        userService.updateUserDetails(User(updatedUser), "changedBy")
-        return UserDTO(userService.getUserByCardId(updatedUser.cardId))
+        return UserDTO(userService.updateUserDetails(User(updatedUser), "changedBy"))
     }
 
     @PatchMapping("/users/updateCardId")
     fun changeUserCardId(@RequestParam email: String, @RequestParam newCardId: Long): UserDTO {
-        userService.changeUserCardId(email, newCardId, "changedBy")
-        return UserDTO(userService.getUserByCardId(newCardId))
+        return UserDTO(userService.changeUserCardId(email, newCardId, "changedBy"))
     }
 
     @DeleteMapping("/users/{cardId}")

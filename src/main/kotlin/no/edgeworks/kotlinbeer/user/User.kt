@@ -11,7 +11,7 @@ data class User(
     val email: String,
     val title: String?,
     val comments: Set<String>,
-    val studprog: String?,
+    val userGroup: String?,
     val isMember: Boolean,
     val creditRating: Byte?,
 ) {
@@ -23,7 +23,7 @@ data class User(
         userDAO.email,
         userDAO.userProperties.find { it.type == UserPropertyType.TITLE }?.value,
         userDAO.userProperties.filter { it.type == UserPropertyType.COMMENT }.mapNotNullTo(HashSet()) { it.value },
-        userDAO.studprog,
+        userDAO.userGroup,
         userDAO.isMember,
         userDAO.userProperties.find { it.type == UserPropertyType.CREDIT }?.value?.toByte(),
     ) {
@@ -40,7 +40,7 @@ data class User(
         email = userDTO.email,
         title = userDTO.title,
         comments = userDTO.comments,
-        studprog = userDTO.studprog,
+        userGroup = userDTO.userGroup,
         isMember = userDTO.isMember,
         creditRating = userDTO.creditRating,
     )

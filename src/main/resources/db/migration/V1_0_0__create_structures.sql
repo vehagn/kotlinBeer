@@ -15,7 +15,7 @@ create table users
     last_name    varchar(63)        not null,
     email        varchar(63) unique not null,
     birthday     timestamp,
-    studprog     varchar(31),
+    user_group   varchar(31),
     is_member    boolean            not null,
     created_by   varchar(15)        not null,
     created_date timestamp          not null,
