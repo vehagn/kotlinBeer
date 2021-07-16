@@ -1,6 +1,5 @@
-package no.edgeworks.kotlinbeer.transaction
+package no.edgeworks.kotlinbeer.wallet
 
-import no.edgeworks.kotlinbeer.wallet.WalletDAO
 import org.hibernate.annotations.CreationTimestamp
 import java.io.Serializable
 import java.time.ZonedDateTime

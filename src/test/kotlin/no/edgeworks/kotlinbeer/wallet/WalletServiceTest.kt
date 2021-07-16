@@ -1,4 +1,4 @@
-package no.edgeworks.kotlinbeer.transaction
+package no.edgeworks.kotlinbeer.wallet
 
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -9,19 +9,17 @@ import no.edgeworks.kotlinbeer.user.UserDAO
 import no.edgeworks.kotlinbeer.user.UserPropertyDAO
 import no.edgeworks.kotlinbeer.user.UserPropertyType
 import no.edgeworks.kotlinbeer.user.UserService
-import no.edgeworks.kotlinbeer.wallet.WalletDAO
-import no.edgeworks.kotlinbeer.wallet.WalletRepository
 import org.junit.jupiter.api.*
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.DynamicTest.dynamicTest
+import org.junit.jupiter.api.Test
 import java.time.ZonedDateTime
 import java.util.*
 import kotlin.test.*
 
-internal class TransactionServiceTest {
+internal class WalletServiceTest {
 
     private val mockUserService = mockk<UserService>()
-    private val mockUserWalletRepository = mockk<WalletRepository>()
+    private val mockWalletRepository = mockk<WalletRepository>()
     private val mockTransactionRepository = mockk<TransactionRepository>()
 
     private val maxDepositValue = 1000
@@ -63,7 +61,7 @@ internal class TransactionServiceTest {
 
     private val testUserWithCreditWallet = WalletDAO(
         id = 2,
-        user = testUser,
+        user = testUserWithCredit,
         cashBalance = 100,
         totalSpent = 0
     )
@@ -82,16 +80,16 @@ internal class TransactionServiceTest {
     )
 
     private val testUserWithBigCashBalanceWallet = WalletDAO(
-        id = 2,
+        id = 3,
         user = testUserWithBigCashBalance,
         cashBalance = Int.MAX_VALUE,
         totalSpent = Int.MAX_VALUE,
     )
 
     @InjectMockKs
-    private val transactionService = TransactionService(
+    private val walletService = WalletService(
         mockUserService,
-        mockUserWalletRepository,
+        mockWalletRepository,
         mockTransactionRepository,
         maxDepositValue,
         maxPurchaseValue,
@@ -105,15 +103,20 @@ internal class TransactionServiceTest {
         @BeforeEach
         fun init() {
             every { mockUserService.getUserDAOByCardId(1) } returns testUser
-            every { mockUserWalletRepository.findByUserId(testUser.id) } returns Optional.of(testUserWallet)
+            every { mockWalletRepository.findByUserId(testUser.id) } returns Optional.of(testUserWallet)
 
             every { mockUserService.getUserDAOByCardId(2) } returns testUserWithCredit
-            every { mockUserWalletRepository.findByUserId(testUserWithCredit.id) } returns Optional.of(
+            every { mockWalletRepository.findByUserId(testUserWithCredit.id) } returns Optional.of(
                 testUserWithCreditWallet
             )
 
+            every { mockUserService.getUserDAOByCardId(3) } returns testUserWithBigCashBalance
+            every { mockWalletRepository.findByUserId(testUserWithBigCashBalance.id) } returns Optional.of(
+                testUserWithBigCashBalanceWallet
+            )
+
             every { mockTransactionRepository.save(any()) } returns TransactionDAO(testUserWallet, 100)
-            every { mockUserWalletRepository.save(any()) } returns testUserWallet
+            every { mockWalletRepository.save(any()) } returns testUserWallet
         }
 
         @Test
@@ -139,13 +142,13 @@ internal class TransactionServiceTest {
         @Test
         fun `user not found during purchase`() {
             every { mockUserService.getUserDAOByCardId(any()) } throws UserNotFoundException()
-            assertThrows<UserNotFoundException> { transactionService.purchase(1, 10) }
+            assertThrows<UserNotFoundException> { walletService.purchase(1, 10) }
         }
 
         @Test
         fun `exceeding purchase value`() {
             val exception = assertThrows<InvalidTransactionException> {
-                transactionService.purchase(
+                walletService.purchase(
                     1,
                     (maxPurchaseValue + 1).toShort()
                 )
@@ -155,14 +158,14 @@ internal class TransactionServiceTest {
 
         @Test
         fun `negative purchase value`() {
-            val exception = assertThrows<InvalidTransactionException> { transactionService.purchase(1, 0) }
+            val exception = assertThrows<InvalidTransactionException> { walletService.purchase(1, 0) }
             assertTrue { exception.message?.contains("must be positive") ?: false }
         }
 
         @Test
         fun `not enough cash balance`() {
             val exception = assertThrows<InvalidTransactionException> {
-                transactionService.purchase(
+                walletService.purchase(
                     1,
                     (testUserWallet.cashBalance + 1).toShort()
                 )
@@ -174,7 +177,7 @@ internal class TransactionServiceTest {
         @Test
         fun `not enough cash balance with tab`() {
             val exception = assertThrows<InvalidTransactionException> {
-                transactionService.purchase(
+                walletService.purchase(
                     2,
                     (testUserWithCreditWallet.cashBalance + (2.times(creditMultiplier) + 1)).toShort()
                 )
@@ -184,7 +187,7 @@ internal class TransactionServiceTest {
         }
 
         @TestFactory
-        fun `purchase transactions with no tab`() =
+        fun `purchase transactions with no credit`() =
             listOf(
                 10 to null,
                 20 to null,
@@ -201,10 +204,10 @@ internal class TransactionServiceTest {
                             + if (errorMessage == null) "be OK." else "give an error containing '$errorMessage'."
                 ) {
                     if (errorMessage == null) {
-                        assertDoesNotThrow { transactionService.purchase(1, value.toShort()) }
+                        assertDoesNotThrow { walletService.purchase(1, value.toShort()) }
                     } else {
                         val exception = assertThrows<InvalidTransactionException> {
-                            transactionService.purchase(
+                            walletService.purchase(
                                 1,
                                 value.toShort()
                             )
@@ -215,7 +218,8 @@ internal class TransactionServiceTest {
             }
 
         @TestFactory
-        fun `purchase transactions with a tab`() =
+        fun `purchase transactions with credit`() {
+            every { mockWalletRepository.save(any()) } returns testUserWithCreditWallet
             listOf(
                 10 to null,
                 20 to null,
@@ -235,10 +239,10 @@ internal class TransactionServiceTest {
                     } should " + if (errorMessage == null) "be OK." else "throw an exception containing '$errorMessage'."
                 ) {
                     if (errorMessage == null) {
-                        assertDoesNotThrow { transactionService.purchase(2, value.toShort()) }
+                        assertDoesNotThrow { walletService.purchase(2, value.toShort()) }
                     } else {
                         val exception = assertThrows<InvalidTransactionException> {
-                            transactionService.purchase(
+                            walletService.purchase(
                                 2,
                                 value.toShort()
                             )
@@ -248,6 +252,7 @@ internal class TransactionServiceTest {
 
                 }
             }
+        }
 
     }
 
@@ -260,15 +265,15 @@ internal class TransactionServiceTest {
         @BeforeEach
         fun init() {
             every { mockUserService.getUserDAOByCardId(1) } returns testUser
-            every { mockUserWalletRepository.findByUserId(testUser.id) } returns Optional.of(testUserWallet)
+            every { mockWalletRepository.findByUserId(testUser.id) } returns Optional.of(testUserWallet)
 
             every { mockUserService.getUserDAOByCardId(3) } returns testUserWithCredit
-            every { mockUserWalletRepository.findByUserId(testUserWithCredit.id) } returns Optional.of(
+            every { mockWalletRepository.findByUserId(testUserWithCredit.id) } returns Optional.of(
                 testUserWithBigCashBalanceWallet
             )
 
             every { mockTransactionRepository.save(any()) } returns TransactionDAO(testUserWallet, 100)
-            every { mockUserWalletRepository.save(any()) } returns testUserWallet
+            every { mockWalletRepository.save(any()) } returns testUserWallet
         }
 
         @Test
@@ -283,36 +288,43 @@ internal class TransactionServiceTest {
         @Test
         fun `user not found during deposit`() {
             every { mockUserService.getUserDAOByCardId(any()) } throws UserNotFoundException()
-            assertThrows<UserNotFoundException> { transactionService.deposit(1, 10) }
+            assertThrows<UserNotFoundException> { walletService.deposit(1, 10) }
         }
 
         @TestFactory
-        fun `deposit transactions`() = listOf(
-            10 to null,
-            20 to null,
-            maxDepositValue to null,
-            maxDepositValue + 1 to "value too high",
-            0 to "must be positive",
-            -1 to "must be positive",
-        ).map { (value, errorMessage) ->
-            dynamicTest("Deposit of ${value} should " + if (errorMessage == null) "be OK." else "throw an exception containing $errorMessage.") {
-                if (errorMessage == null) {
-                    assertDoesNotThrow { transactionService.deposit(1, value.toShort()) }
-                } else {
-                    val exception =
-                        assertThrows<InvalidTransactionException> { transactionService.deposit(1, value.toShort()) }
-                    assertTrue { exception.message?.contains(errorMessage) ?: false }
+        fun `deposit transactions`() {
+            every { mockWalletRepository.save(any()) } returns testUserWithBigCashBalanceWallet
+            listOf(
+                10 to null,
+                20 to null,
+                maxDepositValue to null,
+                maxDepositValue + 1 to "value too high",
+                0 to "must be positive",
+                -1 to "must be positive",
+            ).map { (value, errorMessage) ->
+                dynamicTest("Deposit of $value should " + if (errorMessage == null) "be OK." else "throw an exception containing $errorMessage.") {
+                    if (errorMessage == null) {
+                        assertDoesNotThrow { walletService.deposit(1, value.toShort()) }
+                    } else {
+                        val exception =
+                            assertThrows<InvalidTransactionException> { walletService.deposit(1, value.toShort()) }
+                        assertTrue { exception.message?.contains(errorMessage) ?: false }
+                    }
                 }
             }
         }
 
         @Test
         fun `cash balance integer overflow prevention`() {
-            var exception = assertThrows<InvalidTransactionException> { transactionService.deposit(3, 1) }
+            every { mockWalletRepository.findByUserId(any()) } returns Optional.of(testUserWithBigCashBalanceWallet)
+            every { mockWalletRepository.save(any()) } returns testUserWithBigCashBalanceWallet
+            every { mockUserService.getUserDAOByCardId(any()) } returns testUserWithBigCashBalance
+
+            var exception = assertThrows<InvalidTransactionException> { walletService.deposit(3, 1) }
             assertTrue { exception.message?.contains("integer overflow") ?: false }
 
             exception =
-                assertThrows { transactionService.deposit(3, maxDepositValue.toShort()) }
+                assertThrows { walletService.deposit(3, maxDepositValue.toShort()) }
             assertTrue { exception.message?.contains("integer overflow") ?: false }
         }
     }

@@ -172,6 +172,9 @@ internal class UserServiceTest {
         every { mockUserRepository.findByCardId(any()) } returns Optional.of(testUserA)
         every { mockUserRepository.save(any()) } returns testUserA.copy(deletedDate = ZonedDateTime.now())
 
-        assertNotNull(userService.deleteUser(testUserA.cardId).deletedDate, "Deleting a user should set a non-null deleted date.")
+        assertNotNull(
+            userService.deleteUser(testUserA.cardId).deletedDate,
+            "Deleting a user should set a non-null deleted date."
+        )
     }
 }

@@ -1,6 +1,5 @@
 package no.edgeworks.kotlinbeer.wallet
 
-import no.edgeworks.kotlinbeer.transaction.TransactionDAO
 import no.edgeworks.kotlinbeer.user.UserDAO
 import java.io.Serializable
 import javax.persistence.*

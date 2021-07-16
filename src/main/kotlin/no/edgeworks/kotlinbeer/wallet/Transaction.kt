@@ -1,4 +1,4 @@
-package no.edgeworks.kotlinbeer.transaction
+package no.edgeworks.kotlinbeer.wallet
 
 import java.time.ZonedDateTime
 

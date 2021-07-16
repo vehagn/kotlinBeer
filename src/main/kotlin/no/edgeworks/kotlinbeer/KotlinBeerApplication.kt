@@ -6,16 +6,23 @@ import org.springframework.boot.runApplication
 import org.springframework.context.ConfigurableApplicationContext
 
 @SpringBootApplication
-class KotlinBeerApplication
+class KotlinBeerApplication {
 
-lateinit var applicationContext: ConfigurableApplicationContext
+    companion object {
+        lateinit var applicationContext: ConfigurableApplicationContext
 
-fun main(args: Array<String>) {
-    applicationContext = runApplication<KotlinBeerApplication>(*args)
+        @JvmStatic
+        fun main(args: Array<String>) {
+            applicationContext = runApplication<KotlinBeerApplication>(*args)
+        }
+
+        @JvmStatic
+        fun stop() {
+            SpringApplication.exit(applicationContext)
+        }
+
+    }
 }
 
-fun stop() {
-    SpringApplication.exit(applicationContext)
-}
 
 

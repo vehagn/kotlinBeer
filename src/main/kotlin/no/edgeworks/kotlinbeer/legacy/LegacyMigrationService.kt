@@ -1,8 +1,8 @@
 package no.edgeworks.kotlinbeer.legacy
 
-import no.edgeworks.kotlinbeer.transaction.TransactionDAO
-import no.edgeworks.kotlinbeer.transaction.TransactionRepository
 import no.edgeworks.kotlinbeer.user.*
+import no.edgeworks.kotlinbeer.wallet.TransactionDAO
+import no.edgeworks.kotlinbeer.wallet.TransactionRepository
 import no.edgeworks.kotlinbeer.wallet.WalletDAO
 import no.edgeworks.kotlinbeer.wallet.WalletRepository
 import org.springframework.beans.factory.annotation.Autowired

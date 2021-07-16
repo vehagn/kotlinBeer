@@ -1,10 +1,9 @@
-package no.edgeworks.kotlinbeer
+package no.edgeworks.kotlinbeer.user
 
 import no.edgeworks.kotlinbeer.exceptions.CardIsAlreadyRegisteredException
 import no.edgeworks.kotlinbeer.exceptions.EmailIsAlreadyRegisteredException
 import no.edgeworks.kotlinbeer.exceptions.UserIsDeletedException
 import no.edgeworks.kotlinbeer.exceptions.UserNotFoundException
-import no.edgeworks.kotlinbeer.user.*
 import org.flywaydb.core.Flyway
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Test
@@ -21,12 +20,8 @@ import kotlin.test.*
 @ActiveProfiles("test")
 @Transactional // Rollback database after each test
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-internal class IntegrationTests {
-
-    @Test
-    fun contextLoads() {
-        assertEquals(2, 1 + 1)
-    }
+@Tag("integration")
+internal class UserIntegrationTests {
 
     @Autowired
     private lateinit var userRepository: UserRepository
@@ -48,10 +43,10 @@ internal class IntegrationTests {
     }
 
     @Nested
-    @DisplayName("UserController integration tests")
-    inner class UserControllerIntegrationTests {
+    @DisplayName("User integration tests")
+    inner class UserIntegrationTests {
         @Test
-        fun `verify test user data`() {
+        fun `verify user test data`() {
             assertEquals(3, userRepository.findAll().size, "We should have three test users.")
 
             val user1 = userRepository.findById(1)
